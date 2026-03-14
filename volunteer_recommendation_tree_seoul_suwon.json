@@ -1,0 +1,1132 @@
+{
+  "version": "2026-03-14",
+  "excluded": [
+    "서울동행"
+  ],
+  "design": {
+    "entryNodeId": "q_region_west",
+    "method": "yes_no_tree",
+    "regionBucketingNote": "3개 권역(서울 서부권 / 수원 인근권 / 서울 동부·중심·강남권)을 2개의 예/아니오 질문으로 나누도록 설계했다.",
+    "eastBucketNote": "서울 동부·중심·강남권 버킷에는 종로·중구·성동·광진·동대문·중랑·성북·노원·강동·송파·강남·서초를 함께 넣어 초반 이탈을 줄였다.",
+    "resultPolicy": {
+      "defaultResultCount": 3,
+      "leafStructure": [
+        "primaryIds",
+        "secondaryIds",
+        "fallbackIds"
+      ],
+      "animalRegularityQuestion": true
+    }
+  },
+  "platforms": {
+    "platform_seoul_1365": {
+      "name": "1365 자원봉사포털",
+      "regionBuckets": [
+        "seoul_west",
+        "seoul_east_central"
+      ],
+      "themes": [
+        "전체"
+      ],
+      "summary": "서울 지역·분야·시간·자격 조건으로 실시간 모집 공고를 찾는 기본 플랫폼",
+      "officialUrl": "https://www.1365.go.kr"
+    },
+    "platform_seoul_district_centers": {
+      "name": "서울 25개 자치구 자원봉사센터",
+      "regionBuckets": [
+        "seoul_west",
+        "seoul_east_central"
+      ],
+      "themes": [
+        "전체"
+      ],
+      "summary": "거주지 기준으로 가까운 지역 봉사처를 다시 좁히는 보조 플랫폼",
+      "officialUrl": "https://volunteer.seoul.go.kr/districtInfo.do"
+    },
+    "platform_vms": {
+      "name": "VMS 사회복지자원봉사",
+      "regionBuckets": [
+        "seoul_west",
+        "seoul_east_central",
+        "suwon_nearby"
+      ],
+      "themes": [
+        "장애",
+        "노인",
+        "아동청소년",
+        "사회복지"
+      ],
+      "summary": "복지관·사회복지시설 공고를 찾기 좋은 사회복지 자원봉사 플랫폼",
+      "officialUrl": "https://www.vms.or.kr"
+    },
+    "platform_suwon_vol": {
+      "name": "수원시자원봉사센터",
+      "regionBuckets": [
+        "suwon_nearby"
+      ],
+      "themes": [
+        "전체"
+      ],
+      "summary": "수원 생활권 봉사 일감과 지역 연결용 기본 플랫폼",
+      "officialUrl": "https://suwonvol.com/"
+    },
+    "platform_hwaseong_vol": {
+      "name": "화성시자원봉사센터",
+      "regionBuckets": [
+        "suwon_nearby"
+      ],
+      "themes": [
+        "전체"
+      ],
+      "summary": "화성·동탄 생활권 봉사 일감 연결용 보조 플랫폼",
+      "officialUrl": "https://hsvolunteer.or.kr/"
+    },
+    "platform_gg_vol": {
+      "name": "경기도자원봉사센터",
+      "regionBuckets": [
+        "suwon_nearby"
+      ],
+      "themes": [
+        "전체"
+      ],
+      "summary": "경기도 권역 자원봉사 연결과 교육·지원 정보용 보조 플랫폼",
+      "officialUrl": "https://www.ggvc.or.kr/"
+    },
+    "platform_seoul_caritas": {
+      "name": "서울카리타스자원봉사센터 / 서울가톨릭사회복지회",
+      "regionBuckets": [
+        "seoul_west",
+        "seoul_east_central"
+      ],
+      "themes": [
+        "종교연계",
+        "아동청소년",
+        "복지네트워크"
+      ],
+      "summary": "가톨릭 계열 자원봉사 네트워크와 시설 연계 탐색용",
+      "officialUrl": "https://www.caritasseoul.or.kr/"
+    },
+    "platform_suwon_catholic": {
+      "name": "천주교 수원교구 사회복음화국 자원봉사 모집",
+      "regionBuckets": [
+        "suwon_nearby"
+      ],
+      "themes": [
+        "종교연계",
+        "노인",
+        "청소",
+        "시설봉사"
+      ],
+      "summary": "수원·오산·용인·화성권 종교연계 자원봉사 공고 탐색용",
+      "officialUrl": "https://social.casuwon.or.kr/volunteer/works"
+    }
+  },
+  "centers": {
+    "seoul_youth_outschool": {
+      "name": "서울특별시학교밖청소년지원센터 멘토링",
+      "regionBuckets": [
+        "seoul_west",
+        "seoul_east_central"
+      ],
+      "themes": [
+        "학생교육",
+        "청소년",
+        "멘토링"
+      ],
+      "contactStyle": "direct",
+      "regularity": "program_based",
+      "religiousTone": false,
+      "summary": "학교 밖 청소년 대상 멘토링·맞춤형 프로그램 개설이 가능한 시 단위 멘토링 창구",
+      "officialUrl": "https://seoulallnet.org/Mentoring/info"
+    },
+    "seoul_west_dis_mapo": {
+      "name": "마포장애인종합복지관",
+      "regionBuckets": [
+        "seoul_west"
+      ],
+      "themes": [
+        "장애",
+        "정서지원",
+        "프로그램보조"
+      ],
+      "contactStyle": "direct",
+      "regularity": "regular_or_seasonal",
+      "religiousTone": false,
+      "summary": "장애·비장애 친교 활동, 계절학교 보조 등 서부권 장애인 봉사 선택지",
+      "officialUrl": "https://www.mapowelfare.or.kr/"
+    },
+    "seoul_west_dis_sdm": {
+      "name": "서대문장애인종합복지관",
+      "regionBuckets": [
+        "seoul_west"
+      ],
+      "themes": [
+        "장애",
+        "아동청소년",
+        "프로그램보조",
+        "환경"
+      ],
+      "contactStyle": "direct",
+      "regularity": "regular_or_project",
+      "religiousTone": false,
+      "summary": "발달장애 아동·청년 프로그램 보조와 ESG형 플로깅까지 가능한 서부권 선택지",
+      "officialUrl": "https://www.welfare-center.or.kr/"
+    },
+    "seoul_west_dis_ydp": {
+      "name": "서울시립영등포장애인복지관",
+      "regionBuckets": [
+        "seoul_west"
+      ],
+      "themes": [
+        "장애",
+        "지역사회참여",
+        "프로그램지원"
+      ],
+      "contactStyle": "direct",
+      "regularity": "regular_or_event",
+      "religiousTone": false,
+      "summary": "자원봉사 개발·관리 체계가 분명하고 지역사회참여 프로그램 지원 공고가 자주 보이는 복지관",
+      "officialUrl": "https://www.ydp-welfare.or.kr/"
+    },
+    "seoul_west_old_ydp_senior": {
+      "name": "영등포노인종합복지관",
+      "regionBuckets": [
+        "seoul_west"
+      ],
+      "themes": [
+        "노인",
+        "정서지원",
+        "지역사회연결",
+        "행정보조"
+      ],
+      "contactStyle": "direct",
+      "regularity": "flexible",
+      "religiousTone": false,
+      "summary": "개인 봉사 신청이 가능하고 어르신 지원·마을지기·행정입력형 활동까지 폭이 넓은 노인복지관",
+      "officialUrl": "https://www.silverwelfare.or.kr/"
+    },
+    "seoul_west_animal_mapo": {
+      "name": "서울시립동물복지지원센터 마포",
+      "regionBuckets": [
+        "seoul_west"
+      ],
+      "themes": [
+        "동물",
+        "유기견산책",
+        "돌봄",
+        "촬영"
+      ],
+      "contactStyle": "direct",
+      "regularity": "regular_required",
+      "religiousTone": false,
+      "summary": "유기견 산책·놀이·미용·촬영 봉사가 가능하며 정기성 질문 뒤에 추천하기 좋은 동물 봉사처",
+      "officialUrl": "https://news.seoul.go.kr/env/archives/560028"
+    },
+    "seoul_east_dis_scbid": {
+      "name": "서울장애인종합복지관",
+      "regionBuckets": [
+        "seoul_east_central"
+      ],
+      "themes": [
+        "장애",
+        "교육지원",
+        "훈련지원",
+        "식당지원",
+        "행사지원",
+        "업무보조"
+      ],
+      "contactStyle": "direct",
+      "regularity": "flexible",
+      "religiousTone": false,
+      "summary": "교육·훈련·식당·행사·업무보조·환경미화·재능나눔까지 폭이 가장 넓은 장애인 봉사처 중 하나",
+      "officialUrl": "https://seoulcbid.or.kr/bbs/content.php?co_id=volunteer"
+    },
+    "seoul_east_old_seoulnoin": {
+      "name": "서울노인복지센터",
+      "regionBuckets": [
+        "seoul_east_central"
+      ],
+      "themes": [
+        "노인",
+        "급식",
+        "프로그램실관리",
+        "상담안내",
+        "문화행사지원",
+        "환경미화"
+      ],
+      "contactStyle": "direct",
+      "regularity": "flexible",
+      "religiousTone": "buddhist_affiliated",
+      "summary": "급식·프로그램실 관리·상담안내·문화행사 지원 등 개인이 바로 진입하기 좋은 대표 노인 봉사처",
+      "officialUrl": "https://seoulnoin.or.kr/volunte/volunte.asp"
+    },
+    "seoul_east_visual": {
+      "name": "서울시각장애인복지관",
+      "regionBuckets": [
+        "seoul_east_central"
+      ],
+      "themes": [
+        "장애",
+        "시각장애",
+        "대체자료",
+        "점자",
+        "교열",
+        "재택성향"
+      ],
+      "contactStyle": "indirect_or_quiet",
+      "regularity": "flexible",
+      "religiousTone": false,
+      "summary": "점자·데이지도서 등 대체자료 제작, 스캔·교열·점역 보조처럼 조용한 형태의 봉사에 적합",
+      "officialUrl": "https://www.bokji.or.kr/"
+    },
+    "seoul_east_social_madeul": {
+      "name": "마들종합사회복지관",
+      "regionBuckets": [
+        "seoul_east_central"
+      ],
+      "themes": [
+        "지역사회",
+        "무료급식",
+        "도시락배달",
+        "행사지원",
+        "행정보조",
+        "전문재능기부"
+      ],
+      "contactStyle": "direct",
+      "regularity": "flexible",
+      "religiousTone": false,
+      "summary": "무료급식·도시락 포장·배달·행정지원·영어/코딩/영상 등 재능기부까지 가능한 지역밀착형 복지관",
+      "officialUrl": "https://www.madeul.org/bbs/content.php?co_id=0401"
+    },
+    "seoul_east_social_kangnam": {
+      "name": "강남종합사회복지관",
+      "regionBuckets": [
+        "seoul_east_central"
+      ],
+      "themes": [
+        "지역사회",
+        "도시락배달",
+        "급식",
+        "통합돌봄",
+        "행정보조"
+      ],
+      "contactStyle": "direct",
+      "regularity": "flexible",
+      "religiousTone": false,
+      "summary": "통합돌봄 보조와 도시락 배달 등 일상형 사람 대상 봉사에 적합한 복지관",
+      "officialUrl": "https://kangnamwelfare.co.kr/bbs/content.php?co_id=KNB_2030&me_code=2030"
+    },
+    "seoul_east_religion_taiwha": {
+      "name": "태화기독교사회복지관",
+      "regionBuckets": [
+        "seoul_east_central"
+      ],
+      "themes": [
+        "학생교육",
+        "아동청소년",
+        "행정",
+        "행사",
+        "재능기부",
+        "종교연계"
+      ],
+      "contactStyle": "direct",
+      "regularity": "flexible",
+      "religiousTone": true,
+      "summary": "아동·청소년 1:1 학습지도 보조, 행정·행사·재능기부까지 가능한 종교연계 복지관",
+      "officialUrl": "https://taiwha.or.kr/bbs/content.php?co_id=volunteer"
+    },
+    "seoul_east_animal_ddm": {
+      "name": "서울시립동물복지지원센터 동대문",
+      "regionBuckets": [
+        "seoul_east_central"
+      ],
+      "themes": [
+        "동물",
+        "유기견산책",
+        "사회화놀이",
+        "놀이방정리",
+        "미용",
+        "촬영"
+      ],
+      "contactStyle": "direct",
+      "regularity": "regular_required",
+      "religiousTone": false,
+      "summary": "유기견 산책·사회화 놀이·놀이방 정리 보조가 중심이며 월 4회 이상 가능자에게 특히 적합",
+      "officialUrl": "https://news.seoul.go.kr/env/archives/559991"
+    },
+    "seoul_all_env_hangang": {
+      "name": "한강 자원봉사",
+      "regionBuckets": [
+        "seoul_west",
+        "seoul_east_central"
+      ],
+      "themes": [
+        "환경",
+        "야외",
+        "줍깅",
+        "교란식물제거",
+        "안전모니터링"
+      ],
+      "contactStyle": "outdoor",
+      "regularity": "registered_or_irregular",
+      "religiousTone": false,
+      "summary": "줍깅·교란식물 제거·안전 모니터링 등 사람 직접 대면 부담이 낮은 야외형 봉사",
+      "officialUrl": "https://hangang.seoul.go.kr/www/contents/844.do?mid=616"
+    },
+    "seoul_all_resource_beautiful": {
+      "name": "아름다운가게",
+      "regionBuckets": [
+        "seoul_west",
+        "seoul_east_central"
+      ],
+      "themes": [
+        "자원순환",
+        "매장",
+        "물류",
+        "기증콜센터",
+        "재능기부",
+        "행사"
+      ],
+      "contactStyle": "indoor",
+      "regularity": "regular_or_short",
+      "religiousTone": false,
+      "summary": "자원순환 기반 봉사로 정기·단기 선택이 가능하고 매장·물류·행사·기증콜센터 등 진입 장벽이 낮다",
+      "officialUrl": "https://www.beautifulstore.org/volunteer"
+    },
+    "suwon_dis_rehab": {
+      "name": "수원시장애인종합복지관",
+      "regionBuckets": [
+        "suwon_nearby"
+      ],
+      "themes": [
+        "장애",
+        "프로그램보조",
+        "배달봉사",
+        "재능기부"
+      ],
+      "contactStyle": "direct",
+      "regularity": "flexible",
+      "religiousTone": false,
+      "summary": "수원권 대표 장애인 봉사처로 개인 신청 절차가 분명하고 활동 일정 게시가 활발하다",
+      "officialUrl": "https://www.suwonrehab.or.kr/bbs/content.php?co_id=volunteer"
+    },
+    "suwon_old_paldal": {
+      "name": "팔달노인복지관",
+      "regionBuckets": [
+        "suwon_nearby"
+      ],
+      "themes": [
+        "노인",
+        "경로식당",
+        "도시락전달",
+        "재능기부"
+      ],
+      "contactStyle": "direct",
+      "regularity": "flexible",
+      "religiousTone": false,
+      "summary": "경로식당 보조, 도시락 전달, 재능기부 등 개인이 시작하기 쉬운 수원권 노인 봉사처",
+      "officialUrl": "https://pdsenior.or.kr/volunteer/voluInfo.jsp"
+    },
+    "suwon_old_gwanggyo": {
+      "name": "광교노인복지관",
+      "regionBuckets": [
+        "suwon_nearby"
+      ],
+      "themes": [
+        "노인",
+        "식사배달",
+        "배식",
+        "IT기자단",
+        "네일아트",
+        "요리프로그램보조"
+      ],
+      "contactStyle": "direct",
+      "regularity": "regular_preferred",
+      "religiousTone": false,
+      "summary": "식사배달·배식·IT기자단·요리보조 등 봉사 유형이 다양한 수원 동부권 노인복지관",
+      "officialUrl": "https://www.ggsenior.or.kr/bbs/board.php?bo_table=0302_1"
+    },
+    "hwaseong_old_dongtan": {
+      "name": "화성시동탄노인복지관",
+      "regionBuckets": [
+        "suwon_nearby"
+      ],
+      "themes": [
+        "노인",
+        "복지관지원"
+      ],
+      "contactStyle": "direct",
+      "regularity": "flexible",
+      "religiousTone": false,
+      "summary": "동탄 생활권에서 어르신 대상 봉사를 찾을 때 넣기 좋은 보조 선택지",
+      "officialUrl": "https://www.dtsenior.or.kr/guide/voltr.do"
+    },
+    "suwon_animal_center": {
+      "name": "경기도 반려동물 입양센터(수원)",
+      "regionBuckets": [
+        "suwon_nearby"
+      ],
+      "themes": [
+        "동물",
+        "입양센터",
+        "돌봄"
+      ],
+      "contactStyle": "direct",
+      "regularity": "periodic_opening",
+      "religiousTone": false,
+      "summary": "1365를 통해 월별 모집이 열리는 수원권 동물 봉사처",
+      "officialUrl": "https://animal.gg.go.kr/"
+    },
+    "hwaseong_animal_banlyeomaru": {
+      "name": "반려마루 화성",
+      "regionBuckets": [
+        "suwon_nearby"
+      ],
+      "themes": [
+        "동물",
+        "고양이",
+        "돌봄",
+        "장기자원봉사"
+      ],
+      "contactStyle": "direct",
+      "regularity": "regular_preferred",
+      "religiousTone": false,
+      "summary": "일반자원봉사와 장기자원봉사 체계가 있는 화성권 대표 동물 봉사처",
+      "officialUrl": "https://animal.gg.go.kr/"
+    },
+    "yongin_dis_heart4u": {
+      "name": "용인시처인장애인복지관",
+      "regionBuckets": [
+        "suwon_nearby"
+      ],
+      "themes": [
+        "장애",
+        "밑반찬지원",
+        "시설청소",
+        "프로그램보조",
+        "재능기부"
+      ],
+      "contactStyle": "direct",
+      "regularity": "flexible",
+      "religiousTone": false,
+      "summary": "수원 인근에서 장애인 프로그램 보조와 재가·시설봉사를 폭넓게 찾을 때 적합",
+      "officialUrl": "https://www.heart4u.or.kr/bbs/board.php?bo_table=0302_1"
+    },
+    "suwon_env_botanic": {
+      "name": "수원수목원 수수랑",
+      "regionBuckets": [
+        "suwon_nearby"
+      ],
+      "themes": [
+        "환경",
+        "정원",
+        "식물관리",
+        "해설"
+      ],
+      "contactStyle": "outdoor",
+      "regularity": "seasonal_cohort",
+      "religiousTone": false,
+      "summary": "식물·정원 관리와 해설 중심의 수원권 환경 봉사",
+      "officialUrl": "https://www.suwon.go.kr/iwarbor/"
+    },
+    "suwon_youth_dadream": {
+      "name": "수원청소년문화센터 성인봉사동아리 다드림",
+      "regionBuckets": [
+        "suwon_nearby"
+      ],
+      "themes": [
+        "학생교육",
+        "청소년",
+        "도서관",
+        "재능기부",
+        "행사지원"
+      ],
+      "contactStyle": "direct",
+      "regularity": "cohort_regular",
+      "religiousTone": false,
+      "summary": "도서관 운영지원·동화구연·독후활동 등 교육·문화형 봉사를 원하는 성인에게 적합",
+      "officialUrl": "https://www.syf.or.kr/web/activitieWebView.do?act_seq=758&menuIdx=449"
+    }
+  },
+  "nodes": {
+    "q_region_west": {
+      "type": "question",
+      "text": "주 활동 가능 지역이 서울 서부권(마포·서대문·은평·양천·강서·영등포·구로·금천·동작)인가요?",
+      "yes": "q_west_direct",
+      "no": "q_region_suwon",
+      "candidateIds": [
+        "seoul_youth_outschool",
+        "seoul_west_dis_mapo",
+        "seoul_west_dis_sdm",
+        "seoul_west_dis_ydp",
+        "seoul_west_old_ydp_senior",
+        "seoul_west_animal_mapo",
+        "seoul_east_dis_scbid",
+        "seoul_east_old_seoulnoin",
+        "seoul_east_visual",
+        "seoul_east_social_madeul",
+        "seoul_east_social_kangnam",
+        "seoul_east_religion_taiwha",
+        "seoul_east_animal_ddm",
+        "seoul_all_env_hangang",
+        "seoul_all_resource_beautiful",
+        "suwon_dis_rehab",
+        "suwon_old_paldal",
+        "suwon_old_gwanggyo",
+        "hwaseong_old_dongtan",
+        "suwon_animal_center",
+        "hwaseong_animal_banlyeomaru",
+        "yongin_dis_heart4u",
+        "suwon_env_botanic",
+        "suwon_youth_dadream"
+      ]
+    },
+    "q_region_suwon": {
+      "type": "question",
+      "text": "수원·용인·화성·오산 생활권이 더 편한가요?",
+      "yes": "q_suwon_direct",
+      "no": "q_east_direct",
+      "candidateIds": [
+        "suwon_dis_rehab",
+        "suwon_old_paldal",
+        "suwon_old_gwanggyo",
+        "hwaseong_old_dongtan",
+        "suwon_animal_center",
+        "hwaseong_animal_banlyeomaru",
+        "yongin_dis_heart4u",
+        "suwon_env_botanic",
+        "suwon_youth_dadream",
+        "seoul_youth_outschool",
+        "seoul_east_dis_scbid",
+        "seoul_east_old_seoulnoin",
+        "seoul_east_visual",
+        "seoul_east_social_madeul",
+        "seoul_east_social_kangnam",
+        "seoul_east_religion_taiwha",
+        "seoul_east_animal_ddm",
+        "seoul_all_env_hangang",
+        "seoul_all_resource_beautiful"
+      ]
+    },
+    "q_west_direct": {
+      "type": "question",
+      "text": "사람을 직접 만나 돕는 봉사가 괜찮나요?",
+      "yes": "q_west_youth",
+      "no": "q_west_animal",
+      "candidateIds": [
+        "seoul_youth_outschool",
+        "seoul_west_dis_mapo",
+        "seoul_west_dis_sdm",
+        "seoul_west_dis_ydp",
+        "seoul_west_old_ydp_senior",
+        "seoul_west_animal_mapo",
+        "seoul_all_env_hangang",
+        "seoul_all_resource_beautiful"
+      ]
+    },
+    "q_west_youth": {
+      "type": "question",
+      "text": "학생·청소년 교육/멘토링에 관심이 큰가요?",
+      "yes": "q_west_youth_religious",
+      "no": "q_west_disability",
+      "candidateIds": [
+        "seoul_youth_outschool",
+        "seoul_west_dis_mapo",
+        "seoul_west_dis_sdm",
+        "seoul_west_dis_ydp",
+        "seoul_west_old_ydp_senior"
+      ]
+    },
+    "q_west_youth_religious": {
+      "type": "question",
+      "text": "종교적 색채가 있어도 괜찮나요?",
+      "yes": "r_west_youth_religious",
+      "no": "r_west_youth"
+    },
+    "q_west_disability": {
+      "type": "question",
+      "text": "장애인과 함께하는 활동이 괜찮나요?",
+      "yes": "r_west_disability",
+      "no": "q_west_senior"
+    },
+    "q_west_senior": {
+      "type": "question",
+      "text": "어르신 지원 활동이 괜찮나요?",
+      "yes": "r_west_senior",
+      "no": "r_west_general_people"
+    },
+    "q_west_animal": {
+      "type": "question",
+      "text": "동물과 직접 교감하는 활동이 더 좋나요?",
+      "yes": "q_west_animal_regular",
+      "no": "q_west_environment"
+    },
+    "q_west_animal_regular": {
+      "type": "question",
+      "text": "3개월 동안 5회 이상 정도로 비교적 꾸준히 참여할 수 있나요?",
+      "yes": "r_west_animal",
+      "no": "r_west_low_barrier"
+    },
+    "q_west_environment": {
+      "type": "question",
+      "text": "야외·환경·정리정돈 성격의 활동이 좋나요?",
+      "yes": "r_west_environment",
+      "no": "r_west_low_barrier"
+    },
+    "q_east_direct": {
+      "type": "question",
+      "text": "사람을 직접 만나 돕는 봉사가 괜찮나요?",
+      "yes": "q_east_youth",
+      "no": "q_east_animal",
+      "candidateIds": [
+        "seoul_youth_outschool",
+        "seoul_east_dis_scbid",
+        "seoul_east_old_seoulnoin",
+        "seoul_east_visual",
+        "seoul_east_social_madeul",
+        "seoul_east_social_kangnam",
+        "seoul_east_religion_taiwha",
+        "seoul_east_animal_ddm",
+        "seoul_all_env_hangang",
+        "seoul_all_resource_beautiful"
+      ]
+    },
+    "q_east_youth": {
+      "type": "question",
+      "text": "학생·청소년 교육/멘토링에 관심이 큰가요?",
+      "yes": "q_east_youth_religious",
+      "no": "q_east_disability"
+    },
+    "q_east_youth_religious": {
+      "type": "question",
+      "text": "종교적 색채가 있어도 괜찮나요?",
+      "yes": "r_east_youth_religious",
+      "no": "r_east_youth"
+    },
+    "q_east_disability": {
+      "type": "question",
+      "text": "장애인과 함께하는 활동이 괜찮나요?",
+      "yes": "r_east_disability",
+      "no": "q_east_senior"
+    },
+    "q_east_senior": {
+      "type": "question",
+      "text": "어르신 지원 활동이 괜찮나요?",
+      "yes": "r_east_senior",
+      "no": "r_east_general_people"
+    },
+    "q_east_animal": {
+      "type": "question",
+      "text": "동물과 직접 교감하는 활동이 더 좋나요?",
+      "yes": "q_east_animal_regular",
+      "no": "q_east_environment"
+    },
+    "q_east_animal_regular": {
+      "type": "question",
+      "text": "한 달 기준 4회 이상 정도로 비교적 꾸준히 참여할 수 있나요?",
+      "yes": "r_east_animal",
+      "no": "r_east_low_barrier"
+    },
+    "q_east_environment": {
+      "type": "question",
+      "text": "야외·환경·정리정돈 성격의 활동이 좋나요?",
+      "yes": "r_east_environment",
+      "no": "r_east_low_barrier"
+    },
+    "q_suwon_direct": {
+      "type": "question",
+      "text": "사람을 직접 만나 돕는 봉사가 괜찮나요?",
+      "yes": "q_suwon_youth",
+      "no": "q_suwon_animal",
+      "candidateIds": [
+        "suwon_dis_rehab",
+        "suwon_old_paldal",
+        "suwon_old_gwanggyo",
+        "hwaseong_old_dongtan",
+        "suwon_animal_center",
+        "hwaseong_animal_banlyeomaru",
+        "yongin_dis_heart4u",
+        "suwon_env_botanic",
+        "suwon_youth_dadream"
+      ]
+    },
+    "q_suwon_youth": {
+      "type": "question",
+      "text": "학생·청소년 교육/멘토링 또는 교육행사 지원에 관심이 큰가요?",
+      "yes": "q_suwon_youth_religious",
+      "no": "q_suwon_disability"
+    },
+    "q_suwon_youth_religious": {
+      "type": "question",
+      "text": "종교적 색채가 있어도 괜찮나요?",
+      "yes": "r_suwon_youth_religious",
+      "no": "r_suwon_youth"
+    },
+    "q_suwon_disability": {
+      "type": "question",
+      "text": "장애인과 함께하는 활동이 괜찮나요?",
+      "yes": "r_suwon_disability",
+      "no": "q_suwon_senior"
+    },
+    "q_suwon_senior": {
+      "type": "question",
+      "text": "어르신 지원 활동이 괜찮나요?",
+      "yes": "r_suwon_senior",
+      "no": "r_suwon_general_people"
+    },
+    "q_suwon_animal": {
+      "type": "question",
+      "text": "동물과 직접 교감하는 활동이 더 좋나요?",
+      "yes": "q_suwon_animal_regular",
+      "no": "q_suwon_environment"
+    },
+    "q_suwon_animal_regular": {
+      "type": "question",
+      "text": "정기 또는 장기 봉사(예: 월별 모집, 장기자원봉사)에 참여할 의향이 있나요?",
+      "yes": "r_suwon_animal",
+      "no": "r_suwon_low_barrier"
+    },
+    "q_suwon_environment": {
+      "type": "question",
+      "text": "야외·환경·정원관리 성격의 활동이 좋나요?",
+      "yes": "r_suwon_environment",
+      "no": "r_suwon_low_barrier"
+    }
+  },
+  "results": {
+    "r_west_youth": {
+      "title": "서울 서부권 · 교육/멘토링 중심",
+      "description": "학생·청소년을 직접 돕는 쪽에 무게를 둔 결과",
+      "primaryIds": [
+        "seoul_youth_outschool"
+      ],
+      "secondaryIds": [
+        "seoul_all_resource_beautiful"
+      ],
+      "fallbackIds": [
+        "platform_seoul_1365",
+        "platform_seoul_district_centers"
+      ]
+    },
+    "r_west_youth_religious": {
+      "title": "서울 서부권 · 교육/멘토링 + 종교연계 허용",
+      "description": "멘토링 중심이지만 종교 네트워크 탐색도 허용한 결과",
+      "primaryIds": [
+        "seoul_youth_outschool",
+        "platform_seoul_caritas"
+      ],
+      "secondaryIds": [
+        "seoul_all_resource_beautiful"
+      ],
+      "fallbackIds": [
+        "platform_seoul_1365",
+        "platform_vms"
+      ]
+    },
+    "r_west_disability": {
+      "title": "서울 서부권 · 장애인 봉사 중심",
+      "description": "장애인 프로그램 보조와 지역사회참여 지원 쪽으로 추천",
+      "primaryIds": [
+        "seoul_west_dis_mapo",
+        "seoul_west_dis_sdm"
+      ],
+      "secondaryIds": [
+        "seoul_west_dis_ydp"
+      ],
+      "fallbackIds": [
+        "platform_vms"
+      ]
+    },
+    "r_west_senior": {
+      "title": "서울 서부권 · 어르신 지원 중심",
+      "description": "노인복지관 기반 활동을 우선 추천",
+      "primaryIds": [
+        "seoul_west_old_ydp_senior"
+      ],
+      "secondaryIds": [
+        "seoul_all_env_hangang"
+      ],
+      "fallbackIds": [
+        "platform_vms",
+        "platform_seoul_district_centers"
+      ]
+    },
+    "r_west_general_people": {
+      "title": "서울 서부권 · 사람 대상 일반 봉사",
+      "description": "특정 대상보다 지역사회 일반 지원에 가까운 결과",
+      "primaryIds": [
+        "platform_seoul_district_centers",
+        "platform_seoul_1365"
+      ],
+      "secondaryIds": [
+        "seoul_all_resource_beautiful"
+      ],
+      "fallbackIds": [
+        "platform_vms"
+      ]
+    },
+    "r_west_animal": {
+      "title": "서울 서부권 · 동물 봉사 중심",
+      "description": "정기성 조건을 충족하는 동물 교감형 결과",
+      "primaryIds": [
+        "seoul_west_animal_mapo"
+      ],
+      "secondaryIds": [
+        "seoul_all_resource_beautiful"
+      ],
+      "fallbackIds": [
+        "platform_seoul_1365"
+      ]
+    },
+    "r_west_environment": {
+      "title": "서울 서부권 · 환경/야외 봉사 중심",
+      "description": "사람 직접 대면보다 야외·환경 성격을 선호하는 결과",
+      "primaryIds": [
+        "seoul_all_env_hangang"
+      ],
+      "secondaryIds": [
+        "seoul_all_resource_beautiful"
+      ],
+      "fallbackIds": [
+        "platform_seoul_district_centers"
+      ]
+    },
+    "r_west_low_barrier": {
+      "title": "서울 서부권 · 진입장벽 낮은 실내형",
+      "description": "정기 동물봉사가 부담스럽거나 비대면·실내 성향을 원하는 결과",
+      "primaryIds": [
+        "seoul_all_resource_beautiful"
+      ],
+      "secondaryIds": [
+        "platform_seoul_district_centers"
+      ],
+      "fallbackIds": [
+        "platform_seoul_1365",
+        "platform_vms"
+      ]
+    },
+    "r_east_youth": {
+      "title": "서울 동부·중심·강남권 · 교육/멘토링 중심",
+      "description": "교육·청소년 분야를 우선하는 결과",
+      "primaryIds": [
+        "seoul_youth_outschool"
+      ],
+      "secondaryIds": [
+        "seoul_east_social_kangnam"
+      ],
+      "fallbackIds": [
+        "platform_seoul_1365",
+        "platform_vms"
+      ]
+    },
+    "r_east_youth_religious": {
+      "title": "서울 동부·중심·강남권 · 교육/멘토링 + 종교연계 허용",
+      "description": "종교적 색채가 있어도 무방한 교육·청소년 결과",
+      "primaryIds": [
+        "seoul_east_religion_taiwha",
+        "platform_seoul_caritas"
+      ],
+      "secondaryIds": [
+        "seoul_youth_outschool"
+      ],
+      "fallbackIds": [
+        "platform_vms"
+      ]
+    },
+    "r_east_disability": {
+      "title": "서울 동부·중심·강남권 · 장애인 봉사 중심",
+      "description": "장애인 지원과 접근성·대체자료 성향을 함께 반영한 결과",
+      "primaryIds": [
+        "seoul_east_dis_scbid",
+        "seoul_east_visual"
+      ],
+      "secondaryIds": [
+        "platform_vms"
+      ],
+      "fallbackIds": [
+        "platform_seoul_1365"
+      ]
+    },
+    "r_east_senior": {
+      "title": "서울 동부·중심·강남권 · 어르신 지원 중심",
+      "description": "노인복지관과 지역사회 복지관을 함께 추천하는 결과",
+      "primaryIds": [
+        "seoul_east_old_seoulnoin",
+        "seoul_east_social_madeul"
+      ],
+      "secondaryIds": [
+        "seoul_east_social_kangnam"
+      ],
+      "fallbackIds": [
+        "platform_vms"
+      ]
+    },
+    "r_east_general_people": {
+      "title": "서울 동부·중심·강남권 · 사람 대상 일반 봉사",
+      "description": "아동·노인·지역사회 전반을 폭넓게 돕는 결과",
+      "primaryIds": [
+        "seoul_east_social_madeul",
+        "seoul_east_social_kangnam"
+      ],
+      "secondaryIds": [
+        "platform_seoul_district_centers"
+      ],
+      "fallbackIds": [
+        "platform_seoul_1365",
+        "platform_vms"
+      ]
+    },
+    "r_east_animal": {
+      "title": "서울 동부·중심·강남권 · 동물 봉사 중심",
+      "description": "동북권 접근성을 고려한 정기 동물 봉사 결과",
+      "primaryIds": [
+        "seoul_east_animal_ddm"
+      ],
+      "secondaryIds": [
+        "seoul_all_resource_beautiful"
+      ],
+      "fallbackIds": [
+        "platform_seoul_1365"
+      ]
+    },
+    "r_east_environment": {
+      "title": "서울 동부·중심·강남권 · 환경/야외 봉사 중심",
+      "description": "야외·환경·정리정돈 성향을 선호하는 결과",
+      "primaryIds": [
+        "seoul_all_env_hangang"
+      ],
+      "secondaryIds": [
+        "seoul_all_resource_beautiful"
+      ],
+      "fallbackIds": [
+        "platform_seoul_district_centers"
+      ]
+    },
+    "r_east_low_barrier": {
+      "title": "서울 동부·중심·강남권 · 진입장벽 낮은 실내형",
+      "description": "정기 동물봉사가 어렵거나 실내형을 선호하는 결과",
+      "primaryIds": [
+        "seoul_all_resource_beautiful"
+      ],
+      "secondaryIds": [
+        "platform_seoul_district_centers"
+      ],
+      "fallbackIds": [
+        "platform_seoul_1365",
+        "platform_vms"
+      ]
+    },
+    "r_suwon_youth": {
+      "title": "수원 인근권 · 교육/청소년 중심",
+      "description": "교육행사·도서관·청소년문화 지원 성향을 반영한 결과",
+      "primaryIds": [
+        "suwon_youth_dadream"
+      ],
+      "secondaryIds": [
+        "platform_suwon_vol"
+      ],
+      "fallbackIds": [
+        "platform_gg_vol"
+      ]
+    },
+    "r_suwon_youth_religious": {
+      "title": "수원 인근권 · 교육/청소년 + 종교연계 허용",
+      "description": "교육·청소년 활동을 원하지만 종교 네트워크도 허용하는 결과",
+      "primaryIds": [
+        "suwon_youth_dadream",
+        "platform_suwon_catholic"
+      ],
+      "secondaryIds": [
+        "platform_suwon_vol"
+      ],
+      "fallbackIds": [
+        "platform_gg_vol"
+      ]
+    },
+    "r_suwon_disability": {
+      "title": "수원 인근권 · 장애인 봉사 중심",
+      "description": "수원과 용인의 장애인 복지관을 함께 제안하는 결과",
+      "primaryIds": [
+        "suwon_dis_rehab",
+        "yongin_dis_heart4u"
+      ],
+      "secondaryIds": [
+        "platform_vms"
+      ],
+      "fallbackIds": [
+        "platform_suwon_vol"
+      ]
+    },
+    "r_suwon_senior": {
+      "title": "수원 인근권 · 어르신 지원 중심",
+      "description": "수원·광교·동탄 노인복지관 축으로 추천하는 결과",
+      "primaryIds": [
+        "suwon_old_paldal",
+        "suwon_old_gwanggyo"
+      ],
+      "secondaryIds": [
+        "hwaseong_old_dongtan"
+      ],
+      "fallbackIds": [
+        "platform_vms",
+        "platform_suwon_vol"
+      ]
+    },
+    "r_suwon_general_people": {
+      "title": "수원 인근권 · 사람 대상 일반 봉사",
+      "description": "특정 대상보다 생활권 기반 공고 탐색을 우선하는 결과",
+      "primaryIds": [
+        "platform_suwon_vol",
+        "platform_hwaseong_vol"
+      ],
+      "secondaryIds": [
+        "platform_gg_vol"
+      ],
+      "fallbackIds": [
+        "platform_vms"
+      ]
+    },
+    "r_suwon_animal": {
+      "title": "수원 인근권 · 동물 봉사 중심",
+      "description": "수원 입양센터와 화성 반려마루 중심의 동물 교감형 결과",
+      "primaryIds": [
+        "suwon_animal_center",
+        "hwaseong_animal_banlyeomaru"
+      ],
+      "secondaryIds": [
+        "platform_suwon_vol"
+      ],
+      "fallbackIds": [
+        "platform_gg_vol"
+      ]
+    },
+    "r_suwon_environment": {
+      "title": "수원 인근권 · 환경/정원 봉사 중심",
+      "description": "야외·정원·식물 관리 성향을 반영한 결과",
+      "primaryIds": [
+        "suwon_env_botanic"
+      ],
+      "secondaryIds": [
+        "platform_suwon_vol",
+        "platform_hwaseong_vol"
+      ],
+      "fallbackIds": [
+        "platform_gg_vol"
+      ]
+    },
+    "r_suwon_low_barrier": {
+      "title": "수원 인근권 · 진입장벽 낮은 실내/생활권형",
+      "description": "정기 동물봉사가 부담스럽거나 생활권 기반의 가벼운 시작을 원하는 결과",
+      "primaryIds": [
+        "suwon_youth_dadream",
+        "platform_suwon_vol"
+      ],
+      "secondaryIds": [
+        "platform_gg_vol"
+      ],
+      "fallbackIds": [
+        "platform_vms"
+      ]
+    }
+  }
+}
