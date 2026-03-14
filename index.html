@@ -1,0 +1,825 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>봉사처 추천</title>
+  <meta name="description" content="예/아니오 질문으로 지역과 선호 활동을 좁혀 개인 자격 봉사처를 추천하는 화면" />
+  <style>
+    :root {
+      --bg: #f4f7fb;
+      --bg-2: #eef3fb;
+      --card: #ffffff;
+      --text: #111827;
+      --muted: #667085;
+      --line: #e5e7eb;
+      --line-2: #dbe4f0;
+      --accent: #2563eb;
+      --accent-2: #1d4ed8;
+      --accent-soft: #e8f0ff;
+      --good: #0f766e;
+      --good-soft: #ecfdf5;
+      --dark: #0f172a;
+      --chip: #f8fafc;
+      --shadow: 0 16px 40px rgba(15, 23, 42, 0.08);
+      --radius: 24px;
+      --radius-sm: 16px;
+      --maxw: 1080px;
+    }
+
+    * {
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      background:
+        radial-gradient(circle at top, #ffffff 0%, var(--bg) 45%, #eef2f8 100%);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Noto Sans KR", "Apple SD Gothic Neo", sans-serif;
+    }
+
+    body {
+      min-height: 100vh;
+    }
+
+    a {
+      color: var(--accent-2);
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    .wrap {
+      max-width: var(--maxw);
+      margin: 0 auto;
+      padding: 22px 14px 56px;
+    }
+
+    .hero {
+      padding: 28px 24px 24px;
+      border: 1px solid var(--line);
+      border-radius: 32px;
+      background:
+        linear-gradient(180deg, rgba(255,255,255,0.96), rgba(255,255,255,0.92)),
+        linear-gradient(135deg, #f8fbff, #eef4ff 60%, #fdfefe);
+      box-shadow: var(--shadow);
+      margin-bottom: 16px;
+    }
+
+    .hero-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-bottom: 14px;
+    }
+
+    .badge-row {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      border: 1px solid var(--line-2);
+      background: rgba(255,255,255,0.88);
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+    }
+
+    .badge.primary {
+      background: var(--accent-soft);
+      border-color: #cfe0ff;
+      color: var(--accent-2);
+    }
+
+    .badge.good {
+      background: var(--good-soft);
+      border-color: #cfeee3;
+      color: var(--good);
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(34px, 7vw, 68px);
+      line-height: 1.04;
+      letter-spacing: -0.04em;
+      font-weight: 800;
+      color: #0f172a;
+    }
+
+    .hero-sub {
+      margin-top: 16px;
+      max-width: 820px;
+      font-size: clamp(16px, 2.35vw, 22px);
+      line-height: 1.7;
+      color: #506075;
+      letter-spacing: -0.02em;
+    }
+
+    .panel {
+      background: rgba(255,255,255,0.96);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 22px;
+      margin-bottom: 16px;
+    }
+
+    .panel-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 14px;
+    }
+
+    .eyebrow {
+      color: var(--muted);
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+    }
+
+    .status {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: var(--good-soft);
+      border: 1px solid #cfeee3;
+      color: var(--good);
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .question-title {
+      margin: 0;
+      font-size: clamp(27px, 4vw, 44px);
+      line-height: 1.28;
+      font-weight: 800;
+      letter-spacing: -0.035em;
+      color: #0f172a;
+    }
+
+    .small {
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.7;
+    }
+
+    .meta-row {
+      margin-top: 12px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 14px;
+    }
+
+    .chip {
+      font-size: 13px;
+      line-height: 1.2;
+      padding: 9px 12px;
+      border-radius: 999px;
+      background: var(--chip);
+      color: #3c4c60;
+      border: 1px solid #e6ebf2;
+      max-width: 100%;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .chip.accent {
+      background: var(--accent-soft);
+      color: var(--accent-2);
+      border-color: #d8e5ff;
+      font-weight: 700;
+    }
+
+    .path {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 14px;
+    }
+
+    .path-item {
+      font-size: 12px;
+      color: #6b7280;
+      padding: 8px 10px;
+      border-radius: 999px;
+      border: 1px dashed #d3dae6;
+      background: #fff;
+    }
+
+    .button-row {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 20px;
+    }
+
+    button {
+      border: 0;
+      border-radius: 18px;
+      padding: 17px 18px;
+      font-size: 22px;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      cursor: pointer;
+      transition: transform .08s ease, opacity .2s ease, background .2s ease, filter .2s ease;
+      box-shadow: 0 8px 22px rgba(15, 23, 42, 0.05);
+    }
+
+    button:hover {
+      transform: translateY(-1px);
+      filter: brightness(0.99);
+    }
+
+    button:disabled {
+      opacity: .55;
+      cursor: default;
+      transform: none;
+      filter: none;
+    }
+
+    .btn-yes {
+      background: linear-gradient(180deg, #2d7bf0, #2563eb);
+      color: white;
+    }
+
+    .btn-no {
+      background: linear-gradient(180deg, #0f172a, #111827);
+      color: white;
+    }
+
+    .btn-sub {
+      background: #eff3f8;
+      color: #111827;
+      box-shadow: none;
+      font-size: 18px;
+      font-weight: 700;
+    }
+
+    .actions {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 14px;
+    }
+
+    .stack {
+      display: grid;
+      gap: 16px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .card {
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      padding: 18px;
+      background: #fff;
+      min-width: 0;
+    }
+
+    .card h3 {
+      margin: 0;
+      font-size: 18px;
+      line-height: 1.45;
+      letter-spacing: -0.02em;
+      color: #111827;
+      word-break: keep-all;
+    }
+
+    .card p {
+      margin: 10px 0 0;
+      color: var(--muted);
+      line-height: 1.7;
+      font-size: 15px;
+      word-break: keep-all;
+    }
+
+    .card .meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 12px;
+    }
+
+    .card-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    .link-button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 42px;
+      padding: 10px 14px;
+      border-radius: 12px;
+      border: 1px solid #dbe5f5;
+      background: #f8fbff;
+      color: var(--accent-2);
+      font-size: 14px;
+      font-weight: 700;
+      text-decoration: none;
+    }
+
+    .link-button.secondary {
+      background: #fff;
+      color: #344054;
+    }
+
+    .section-title {
+      margin: 0 0 12px;
+      font-size: 19px;
+      line-height: 1.35;
+      letter-spacing: -0.02em;
+      color: #111827;
+    }
+
+    .empty {
+      text-align: center;
+      color: var(--muted);
+      padding: 24px 12px;
+      border: 1px dashed #d8dee9;
+      border-radius: 16px;
+      background: #fafcff;
+    }
+
+    .footer-note {
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.75;
+      padding: 6px 2px 0;
+      text-align: center;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    @media (max-width: 820px) {
+      .grid, .button-row {
+        grid-template-columns: 1fr;
+      }
+
+      .wrap {
+        padding: 14px 12px 40px;
+      }
+
+      .hero {
+        padding: 22px 18px;
+        border-radius: 24px;
+      }
+
+      .panel {
+        padding: 18px;
+      }
+
+      button {
+        font-size: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <section class="hero">
+      <div class="hero-top">
+        <div class="badge-row">
+          <span class="badge primary">봉사처 추천</span>
+          <span class="badge">QR 접속 화면</span>
+          <span class="badge">예/아니오 질문형</span>
+        </div>
+        <div class="badge-row">
+          <span class="badge good">삼성 DS 이상혁 제작</span>
+        </div>
+      </div>
+      <h1>봉사처 추천</h1>
+      <div class="hero-sub">
+        거주·생활권과 선호 활동을 차례로 좁혀, 개인 자격으로 참여하기 쉬운 봉사처를 추천합니다.
+        서울·수원권뿐 아니라 성남·판교, 거제·통영·창원 등 경남권까지 함께 포함했습니다.
+      </div>
+    </section>
+
+    <section class="panel" id="appPanel">
+      <div class="panel-head">
+        <div class="eyebrow">현재 질문</div>
+        <div class="status" id="statusBadge">추천 진행 중</div>
+      </div>
+
+      <h2 class="question-title" id="questionText">질문을 준비하는 중입니다.</h2>
+      <div class="small" id="questionMeta"></div>
+
+      <div class="chips" id="candidateChips"></div>
+      <div class="path" id="path"></div>
+
+      <div class="button-row" id="answerButtons">
+        <button class="btn-yes" id="yesBtn" type="button">예</button>
+        <button class="btn-no" id="noBtn" type="button">아니오</button>
+      </div>
+
+      <div class="actions">
+        <button class="btn-sub" id="backBtn" type="button">이전 질문</button>
+        <button class="btn-sub" id="restartBtn" type="button">처음부터</button>
+      </div>
+    </section>
+
+    <section class="stack hidden" id="resultPanel"></section>
+
+    <div class="footer-note">
+      본 화면은 삼성 DS 이상혁이 제작한 봉사처 추천 웹페이지입니다. 실제 모집 여부와 신청 가능 시점은 기관 또는 플랫폼 링크에서 다시 확인하세요.
+    </div>
+  </div>
+
+  <script>
+    const APP_DATA = {"version":"2026-03-14","excluded":["서울동행"],"design":{"entryNodeId":"q_region_seoul","method":"yes_no_tree","creator":"삼성 DS 이상혁","note":"GitHub Pages 배포를 쉽게 하도록 단일 HTML에서도 사용할 수 있는 구조로 정리했다.","regionBucketingNote":"서울 생활권 → 서울 서부/동부·중심·강남, 비서울 → 수원권 → 성남·판교권 → 거제·통영·창원권 → 전국 기타 순으로 예/아니오 질문을 구성했다.","resultPolicy":{"defaultResultCount":3,"leafStructure":["primaryIds","secondaryIds","fallbackIds"],"animalRegularityQuestion":true,"indoorQuestionAdded":true}},"platforms":{"platform_1365":{"name":"1365 자원봉사포털","regionBuckets":["seoul_west","seoul_east_central","suwon_nearby","pangyo_seongnam","geoje_gyeongnam","national_other"],"themes":["전체"],"summary":"전국 단위 실시간 공고를 지역·요일·시간 조건으로 찾는 기본 플랫폼","officialUrl":"https://www.1365.go.kr"},"platform_vms":{"name":"VMS 사회복지자원봉사","regionBuckets":["seoul_west","seoul_east_central","suwon_nearby","pangyo_seongnam","geoje_gyeongnam","national_other"],"themes":["장애","노인","아동청소년","사회복지"],"summary":"복지관·사회복지시설 공고를 찾기 좋은 전국 사회복지 자원봉사 플랫폼","officialUrl":"https://www.vms.or.kr"},"platform_center_finder":{"name":"전국 자원봉사센터 찾기","regionBuckets":["seoul_west","seoul_east_central","suwon_nearby","pangyo_seongnam","geoje_gyeongnam","national_other"],"themes":["전체"],"summary":"거주지 기준 시·군·구 자원봉사센터를 찾아 지역 문의처와 공고 경로를 확인하는 안내 페이지","officialUrl":"https://www.kfvc.or.kr/contents/sub04/sub04_02.html"},"platform_seoul_district_centers":{"name":"서울 25개 자치구 자원봉사센터","regionBuckets":["seoul_west","seoul_east_central"],"themes":["전체"],"summary":"서울 거주지 기준 가까운 구 자원봉사센터를 찾아 지역 맞춤 공고를 다시 좁히는 경로","officialUrl":"https://volunteer.seoul.go.kr/districtInfo.do"},"platform_gg_vol":{"name":"경기도자원봉사센터","regionBuckets":["suwon_nearby","pangyo_seongnam"],"themes":["전체"],"summary":"경기도 권역 자원봉사 정보, 교육, 지역 연결을 확인하는 광역 플랫폼","officialUrl":"https://www.ggvc.or.kr/"},"platform_suwon_vol":{"name":"수원시자원봉사센터","regionBuckets":["suwon_nearby"],"themes":["전체"],"summary":"수원 생활권 공고와 행사형 봉사 일감을 확인하기 좋은 지역 플랫폼","officialUrl":"https://suwonvol.com/"},"platform_hwaseong_vol":{"name":"화성시자원봉사센터","regionBuckets":["suwon_nearby"],"themes":["전체"],"summary":"화성·동탄 생활권 봉사 공고와 지역 연결을 확인하는 지역 플랫폼","officialUrl":"https://hsvolunteer.or.kr/"},"platform_seoul_caritas":{"name":"서울카리타스자원봉사센터 / 서울가톨릭사회복지회","regionBuckets":["seoul_west","seoul_east_central"],"themes":["종교연계","아동청소년","복지네트워크"],"summary":"가톨릭 계열 복지 네트워크를 함께 탐색할 때 쓰기 좋은 서울권 경로","officialUrl":"https://www.caritasseoul.or.kr/"},"platform_suwon_catholic":{"name":"천주교 수원교구 사회복음화국 자원봉사 모집","regionBuckets":["suwon_nearby"],"themes":["종교연계","시설봉사","복지네트워크"],"summary":"수원·화성·용인권 종교연계 자원봉사 공고를 찾는 경로","officialUrl":"https://social.casuwon.or.kr/volunteer/works"},"platform_seongnam_vol":{"name":"성남시자원봉사센터","regionBuckets":["pangyo_seongnam"],"themes":["전체"],"summary":"성남권 공고, 자원봉사 교육, 지역 단체 연결을 확인하는 기본 플랫폼","officialUrl":"https://volunteer.seongnam.go.kr/"},"platform_geoje_vol":{"name":"거제시자원봉사센터","regionBuckets":["geoje_gyeongnam"],"themes":["전체"],"summary":"거제권 생활형 자원봉사와 지역 단체 연계를 확인하는 기본 플랫폼","officialUrl":"https://www.geoje.go.kr/index.geoje?menuCd=DOM_000008906018002000"},"platform_changwon_vol":{"name":"창원시 자원봉사 모집 페이지","regionBuckets":["geoje_gyeongnam"],"themes":["전체"],"summary":"창원권 모집중 공고를 바로 확인하기 쉬운 지역 페이지","officialUrl":"https://www.changwon.go.kr/cwportal/depart/11067/14173/14194.web"}},"centers":{"seoul_youth_outschool":{"name":"서울특별시학교밖청소년지원센터 멘토링","regionBuckets":["seoul_west","seoul_east_central"],"themes":["학생교육","청소년","멘토링"],"contactStyle":"direct","regularity":"program_based","religiousTone":false,"summary":"학교 밖 청소년 대상 멘토링·맞춤형 프로그램 개설이 가능한 시 단위 멘토링 창구","officialUrl":"https://seoulallnet.org/Mentoring/info"},"seoul_west_dis_mapo":{"name":"마포장애인종합복지관","regionBuckets":["seoul_west"],"themes":["장애","정서지원","프로그램보조"],"contactStyle":"direct","regularity":"regular_or_seasonal","religiousTone":false,"summary":"장애·비장애 친교 활동, 계절학교 보조 등 서부권 장애인 봉사 선택지","officialUrl":"https://www.mapowelfare.or.kr/"},"seoul_west_dis_sdm":{"name":"서대문장애인종합복지관","regionBuckets":["seoul_west"],"themes":["장애","아동청소년","프로그램보조","환경"],"contactStyle":"direct","regularity":"regular_or_project","religiousTone":false,"summary":"발달장애 아동·청년 프로그램 보조와 ESG형 플로깅까지 가능한 서부권 선택지","officialUrl":"https://www.welfare-center.or.kr/"},"seoul_west_dis_ydp":{"name":"서울시립영등포장애인복지관","regionBuckets":["seoul_west"],"themes":["장애","지역사회참여","프로그램지원"],"contactStyle":"direct","regularity":"regular_or_event","religiousTone":false,"summary":"자원봉사 개발·관리 체계가 분명하고 지역사회참여 프로그램 지원 공고가 자주 보이는 복지관","officialUrl":"https://www.ydp-welfare.or.kr/"},"seoul_west_old_ydp_senior":{"name":"영등포노인종합복지관","regionBuckets":["seoul_west"],"themes":["노인","정서지원","지역사회연결","행정보조"],"contactStyle":"direct","regularity":"flexible","religiousTone":false,"summary":"개인 봉사 신청이 가능하고 어르신 지원·마을지기·행정입력형 활동까지 폭이 넓은 노인복지관","officialUrl":"https://www.silverwelfare.or.kr/"},"seoul_west_animal_mapo":{"name":"서울시립동물복지지원센터 마포","regionBuckets":["seoul_west"],"themes":["동물","유기견산책","돌봄","촬영"],"contactStyle":"direct","regularity":"regular_required","religiousTone":false,"summary":"유기견 산책·놀이·미용·촬영 봉사가 가능하며 정기성 질문 뒤에 추천하기 좋은 동물 봉사처","officialUrl":"https://news.seoul.go.kr/env/archives/560028","applyUrl":"https://www.1365.go.kr"},"seoul_east_dis_scbid":{"name":"서울장애인종합복지관","regionBuckets":["seoul_east_central"],"themes":["장애","교육지원","훈련지원","식당지원","행사지원","업무보조"],"contactStyle":"direct","regularity":"flexible","religiousTone":false,"summary":"교육·훈련·식당·행사·업무보조·환경미화·재능나눔까지 폭이 가장 넓은 장애인 봉사처 중 하나","officialUrl":"https://seoulcbid.or.kr/bbs/content.php?co_id=volunteer"},"seoul_east_old_seoulnoin":{"name":"서울노인복지센터","regionBuckets":["seoul_east_central"],"themes":["노인","급식","프로그램실관리","상담안내","문화행사지원","환경미화"],"contactStyle":"direct","regularity":"flexible","religiousTone":"불교계 운영","summary":"급식·프로그램실 관리·상담안내·문화행사 지원 등 개인이 바로 진입하기 좋은 대표 노인 봉사처","officialUrl":"https://seoulnoin.or.kr/volunte/volunte.asp"},"seoul_east_visual":{"name":"서울시각장애인복지관","regionBuckets":["seoul_east_central"],"themes":["장애","시각장애","대체자료","점자","교열","재택성향"],"contactStyle":"indirect_or_quiet","regularity":"flexible","religiousTone":false,"summary":"점자·데이지도서 등 대체자료 제작, 스캔·교열·점역 보조처럼 조용한 형태의 봉사에 적합","officialUrl":"https://www.bokji.or.kr/"},"seoul_east_social_madeul":{"name":"마들종합사회복지관","regionBuckets":["seoul_east_central"],"themes":["지역사회","무료급식","도시락배달","행사지원","행정보조","전문재능기부"],"contactStyle":"direct","regularity":"flexible","religiousTone":false,"summary":"무료급식·도시락 포장·배달·행정지원·영어/코딩/영상 등 재능기부까지 가능한 지역밀착형 복지관","officialUrl":"https://www.madeul.org/bbs/content.php?co_id=0401"},"seoul_east_social_kangnam":{"name":"강남종합사회복지관","regionBuckets":["seoul_east_central"],"themes":["지역사회","도시락배달","급식","통합돌봄","행정보조"],"contactStyle":"direct","regularity":"flexible","religiousTone":false,"summary":"통합돌봄 보조와 도시락 배달 등 일상형 사람 대상 봉사에 적합한 복지관","officialUrl":"https://kangnamwelfare.co.kr/bbs/content.php?co_id=KNB_2030&me_code=2030"},"seoul_east_religion_taiwha":{"name":"태화기독교사회복지관","regionBuckets":["seoul_east_central"],"themes":["학생교육","아동청소년","행정","행사","재능기부","종교연계"],"contactStyle":"direct","regularity":"flexible","religiousTone":true,"summary":"아동·청소년 1:1 학습지도 보조, 행정·행사·재능기부까지 가능한 종교연계 복지관","officialUrl":"https://taiwha.or.kr/bbs/content.php?co_id=volunteer"},"seoul_east_animal_ddm":{"name":"서울시립동물복지지원센터 동대문","regionBuckets":["seoul_east_central"],"themes":["동물","유기견산책","사회화놀이","놀이방정리","미용","촬영"],"contactStyle":"direct","regularity":"regular_required","religiousTone":false,"summary":"유기견 산책·사회화 놀이·놀이방 정리 보조가 중심이며 월 4회 이상 가능자에게 특히 적합","officialUrl":"https://news.seoul.go.kr/env/archives/559991","applyUrl":"https://www.1365.go.kr"},"seoul_all_env_hangang":{"name":"한강 자원봉사","regionBuckets":["seoul_west","seoul_east_central"],"themes":["환경","야외","줍깅","교란식물제거","안전모니터링"],"contactStyle":"outdoor","regularity":"registered_or_irregular","religiousTone":false,"summary":"줍깅·교란식물 제거·안전 모니터링 등 사람 직접 대면 부담이 낮은 야외형 봉사","officialUrl":"https://hangang.seoul.go.kr/www/contents/844.do?mid=616"},"seoul_all_resource_beautiful":{"name":"아름다운가게","regionBuckets":["seoul_west","seoul_east_central"],"themes":["자원순환","매장","물류","기증콜센터","재능기부","행사"],"contactStyle":"indoor","regularity":"regular_or_short","religiousTone":false,"summary":"자원순환 기반 봉사로 정기·단기 선택이 가능하고 매장·물류·행사·기증콜센터 등 진입 장벽이 낮다","officialUrl":"https://www.beautifulstore.org/volunteer"},"suwon_dis_rehab":{"name":"수원시장애인종합복지관","regionBuckets":["suwon_nearby"],"themes":["장애","프로그램보조","배달봉사","재능기부"],"contactStyle":"direct","regularity":"flexible","religiousTone":false,"summary":"수원권 대표 장애인 봉사처로 개인 신청 절차가 분명하고 활동 일정 게시가 활발하다","officialUrl":"https://www.suwonrehab.or.kr/bbs/content.php?co_id=volunteer"},"suwon_old_paldal":{"name":"팔달노인복지관","regionBuckets":["suwon_nearby"],"themes":["노인","경로식당","도시락전달","재능기부"],"contactStyle":"direct","regularity":"flexible","religiousTone":false,"summary":"경로식당 보조, 도시락 전달, 재능기부 등 개인이 시작하기 쉬운 수원권 노인 봉사처","officialUrl":"https://pdsenior.or.kr/volunteer/voluInfo.jsp"},"suwon_old_gwanggyo":{"name":"광교노인복지관","regionBuckets":["suwon_nearby"],"themes":["노인","식사배달","배식","IT기자단","네일아트","요리프로그램보조"],"contactStyle":"direct","regularity":"regular_preferred","religiousTone":false,"summary":"식사배달·배식·IT기자단·요리보조 등 봉사 유형이 다양한 수원 동부권 노인복지관","officialUrl":"https://www.ggsenior.or.kr/bbs/board.php?bo_table=0302_1"},"hwaseong_old_dongtan":{"name":"화성시동탄노인복지관","regionBuckets":["suwon_nearby"],"themes":["노인","복지관지원"],"contactStyle":"direct","regularity":"flexible","religiousTone":false,"summary":"동탄 생활권에서 어르신 대상 봉사를 찾을 때 넣기 좋은 보조 선택지","officialUrl":"https://www.dtsenior.or.kr/guide/voltr.do"},"suwon_animal_center":{"name":"경기도 반려동물 입양센터(수원)","regionBuckets":["suwon_nearby"],"themes":["동물","입양센터","돌봄"],"contactStyle":"direct","regularity":"periodic_opening","religiousTone":false,"summary":"1365를 통해 월별 모집이 열리는 수원권 동물 봉사처","officialUrl":"https://animal.gg.go.kr/","applyUrl":"https://www.1365.go.kr"},"hwaseong_animal_banlyeomaru":{"name":"반려마루 화성","regionBuckets":["suwon_nearby"],"themes":["동물","고양이","돌봄","장기자원봉사"],"contactStyle":"direct","regularity":"regular_preferred","religiousTone":false,"summary":"일반자원봉사와 장기자원봉사 체계가 있는 화성권 대표 동물 봉사처","officialUrl":"https://animal.gg.go.kr/","applyUrl":"https://www.1365.go.kr"},"yongin_dis_heart4u":{"name":"용인시처인장애인복지관","regionBuckets":["suwon_nearby"],"themes":["장애","밑반찬지원","시설청소","프로그램보조","재능기부"],"contactStyle":"direct","regularity":"flexible","religiousTone":false,"summary":"수원 인근에서 장애인 프로그램 보조와 재가·시설봉사를 폭넓게 찾을 때 적합","officialUrl":"https://www.heart4u.or.kr/bbs/board.php?bo_table=0302_1"},"suwon_env_botanic":{"name":"수원수목원 수수랑","regionBuckets":["suwon_nearby"],"themes":["환경","정원","식물관리","해설"],"contactStyle":"outdoor","regularity":"seasonal_cohort","religiousTone":false,"summary":"식물·정원 관리와 해설 중심의 수원권 환경 봉사","officialUrl":"https://www.suwon.go.kr/iwarbor/"},"suwon_youth_dadream":{"name":"수원청소년문화센터 성인봉사동아리 다드림","regionBuckets":["suwon_nearby"],"themes":["학생교육","청소년","도서관","재능기부","행사지원"],"contactStyle":"direct","regularity":"cohort_regular","religiousTone":false,"summary":"도서관 운영지원·동화구연·독후활동 등 교육·문화형 봉사를 원하는 성인에게 적합","officialUrl":"https://www.syf.or.kr/web/activitieWebView.do?act_seq=758&menuIdx=449"},"pangyo_seongnam_dis_rehab21":{"name":"성남시장애인종합복지관","regionBuckets":["pangyo_seongnam"],"themes":["장애","프로그램보조","가사지원","행정보조","교육지원"],"contactStyle":"direct","regularity":"flexible","religiousTone":false,"summary":"밑반찬·목욕·가사지원, 프로그램 지원, 환경미화, 행정업무 지원 등 폭넓은 활동 안내가 있는 성남권 대표 장애인 봉사처","officialUrl":"https://www.rehab21.or.kr/bbs/board.php?bo_table=B23"},"pangyo_seongnam_old_pangyo":{"name":"판교노인종합복지관","regionBuckets":["pangyo_seongnam"],"themes":["노인","경로식당","행정보조","프로그램보조","재가봉사","행사보조"],"contactStyle":"direct","regularity":"flexible","religiousTone":"불교계 운영","summary":"경로식당, 행정보조, 재가봉사, 행사보조, 주간보호센터 보조까지 안내가 잘 정리된 판교권 대표 노인 봉사처","officialUrl":"https://www.pangyonoin.or.kr/support/service01.html","applyUrl":"https://www.vms.or.kr/partspace/recruitView.do?seq=506374"},"pangyo_seongnam_social_pangyo":{"name":"판교종합사회복지관","regionBuckets":["pangyo_seongnam"],"themes":["지역사회","행사보조","아동","작은행사","프로그램지원"],"contactStyle":"direct_or_platform","regularity":"project_or_event","religiousTone":false,"summary":"행사보조, 어린이기획단 지원, 환경축제 보조처럼 지역 행사·프로그램형 공고가 VMS에 올라오는 판교권 사회복지관","officialUrl":"https://www.seongnam.go.kr/city/1000223/10127/contents.do","applyUrl":"https://www.vms.or.kr/partspace/recruitView.do?seq=504148"},"pangyo_seongnam_library":{"name":"판교도서관 자원봉사","regionBuckets":["pangyo_seongnam"],"themes":["도서관","자료정리","실내","저자극","성인봉사"],"contactStyle":"indoor","regularity":"regular_or_short","religiousTone":false,"summary":"성남시 도서관사업소 안내에 따라 판교도서관 포함 여러 도서관의 성인 자원봉사를 1365로 신청할 수 있는 저자극 실내형 선택지","officialUrl":"https://www.snlib.go.kr/sj/menu/11412/contents/40371/contents.do","applyUrl":"https://www.snlib.go.kr/pg/20001/bbsPostDetail.do?postIdx=205316"},"pangyo_seongnam_youth_center":{"name":"성남시청소년청년재단 유스센터 봉사","regionBuckets":["pangyo_seongnam"],"themes":["학생교육","청소년","그림책읽기","행사보조","청년우선"],"contactStyle":"direct_or_notice","regularity":"project_or_event","religiousTone":false,"summary":"야탑·판교 유스센터 등에서 그림책 읽어주기, 행사보조, 청소년 프로그램 지원 같은 청년·성인 참여 공지가 열리는 성남권 선택지","officialUrl":"https://www.snyouth.or.kr/fmcs/1","applyUrl":"https://www.snyouth.or.kr/fmcs/289?action=read&action-value=01b0ca986791de3be2ed3ffe8145467b"},"pangyo_seongnam_animal_env_group":{"name":"성남시자원봉사센터 반려동물환경운동봉사회","regionBuckets":["pangyo_seongnam"],"themes":["동물","환경","생태","반려동물","지역단체"],"contactStyle":"outdoor","regularity":"direct_or_notice","religiousTone":false,"summary":"성남시자원봉사센터 등록 단체 중 반려동물·환경·생태 보호 성격의 활동을 찾을 때 참고하기 좋은 지역 단체형 경로","officialUrl":"https://volunteer.seongnam.go.kr/main.php?Page=1&SearchCategory=%EB%B3%B4%EA%B1%B4&SearchColumn=&SearchValue=&act=view&master=bbs&master_sid=1&menugrp=010102&sid=976"},"geoje_gyeongnam_dis_geoje":{"name":"거제시장애인복지관","regionBuckets":["geoje_gyeongnam"],"themes":["장애","프로그램보조","기본교육","VMS","지역배치"],"contactStyle":"direct","regularity":"flexible","religiousTone":false,"summary":"전화·방문·홈페이지 신청 후 교육과 배치를 거쳐 참여하는 거제권 대표 장애인 봉사처","officialUrl":"https://gjcrc.or.kr/","applyUrl":"https://gjcrc.or.kr/mobile/support/service.php"},"geoje_gyeongnam_social_geoje":{"name":"거제시종합사회복지관","regionBuckets":["geoje_gyeongnam"],"themes":["지역사회","작은도서관","행사지원","자원봉사관리"],"contactStyle":"direct_or_platform","regularity":"flexible","religiousTone":false,"summary":"자원봉사 안내·신청 메뉴를 운영하고, 작은도서관·지역밀착형 프로그램 같은 생활밀착 봉사와 연결하기 쉬운 거제권 복지관","officialUrl":"https://gjcw.or.kr/","applyUrl":"https://www.vms.or.kr/partspace/recruitView.do?seq=477483"},"geoje_gyeongnam_social_okpo":{"name":"옥포종합사회복지관","regionBuckets":["geoje_gyeongnam"],"themes":["학생교육","문해","작은도서관","환경","해안정화"],"contactStyle":"direct_or_platform","regularity":"regular_or_project","religiousTone":false,"summary":"한글교실 보조, 작은도서관 운영, 해안가 환경정화처럼 교육·실내·환경형 선택지를 함께 담기 좋은 거제권 봉사처","officialUrl":"https://gjcw.or.kr/sub01-4/","applyUrl":"https://www.vms.or.kr/partspace/recruitView.do?seq=484031"},"geoje_gyeongnam_old_seniorclub":{"name":"거제시니어클럽","regionBuckets":["geoje_gyeongnam"],"themes":["노인","시니어","자원봉사신청","생활지원"],"contactStyle":"direct","regularity":"flexible","religiousTone":false,"summary":"후원·자원봉사 메뉴와 신청 안내를 운영하는 거제권 시니어 지원 기관으로, 어르신 관련 봉사를 찾는 첫 창구로 쓰기 좋다","officialUrl":"https://geojesenior.or.kr/","applyUrl":"https://geojesenior.or.kr/sub04/sub04-2/"},"geoje_gyeongnam_social_tongyeong":{"name":"통영시종합사회복지관","regionBuckets":["geoje_gyeongnam"],"themes":["지역사회","노인맞춤돌봄","푸드마켓","행정보조","환경미화"],"contactStyle":"direct","regularity":"flexible","religiousTone":false,"summary":"자원봉사 안내를 운영하고 노인맞춤돌봄·푸드마켓·지역조직화 사업을 함께 하는 통영권 대표 복지관","officialUrl":"https://www.tycwc.or.kr/","applyUrl":"https://www.tycwc.or.kr/support/volunteer_guide.php"},"geoje_gyeongnam_dis_changwon":{"name":"창원시장애인종합복지관","regionBuckets":["geoje_gyeongnam"],"themes":["장애","프로그램지원","주방봉사","미술교실","후원봉사"],"contactStyle":"direct_or_platform","regularity":"regular_or_project","religiousTone":false,"summary":"후원·봉사 메뉴를 두고 있고, 미술교실·주방봉사 등 정기 공고가 VMS에 올라오는 창원권 대표 장애인 봉사처","officialUrl":"https://www.cwrehab.or.kr/","applyUrl":"https://www.vms.or.kr/partspace/recruitView.do?seq=501446"},"geoje_gyeongnam_old_changwon":{"name":"성산노인종합복지관","regionBuckets":["geoje_gyeongnam"],"themes":["노인","배식","프로그램안내","안전지킴이","캠페인"],"contactStyle":"direct","regularity":"regular_or_project","religiousTone":false,"summary":"금빛봉사단, 경로식당 배식, 프로그램실 안내, 안전지킴이 활동 등 어르신 대상 봉사 축이 분명한 창원권 노인복지관","officialUrl":"https://ssswc.cwwf.or.kr/","applyUrl":"https://ssswc.cwwf.or.kr/sub/work_04.php"}},"nodes":{"q_region_seoul":{"type":"question","text":"주 활동 가능 지역이 서울 생활권인가요?","yes":"q_region_seoul_west","no":"q_region_suwon","candidateIds":["seoul_youth_outschool","seoul_west_dis_mapo","seoul_west_dis_sdm","seoul_west_dis_ydp","seoul_west_old_ydp_senior","seoul_west_animal_mapo","seoul_east_dis_scbid","seoul_east_old_seoulnoin","seoul_east_visual","seoul_east_social_madeul","seoul_east_social_kangnam","seoul_east_religion_taiwha","seoul_east_animal_ddm","seoul_all_env_hangang","seoul_all_resource_beautiful","suwon_dis_rehab","suwon_old_paldal","suwon_old_gwanggyo","hwaseong_old_dongtan","suwon_animal_center","hwaseong_animal_banlyeomaru","yongin_dis_heart4u","suwon_env_botanic","suwon_youth_dadream","pangyo_seongnam_dis_rehab21","pangyo_seongnam_old_pangyo","pangyo_seongnam_social_pangyo","pangyo_seongnam_library","pangyo_seongnam_youth_center","pangyo_seongnam_animal_env_group","geoje_gyeongnam_dis_geoje","geoje_gyeongnam_social_geoje","geoje_gyeongnam_social_okpo","geoje_gyeongnam_old_seniorclub","geoje_gyeongnam_social_tongyeong","geoje_gyeongnam_dis_changwon","geoje_gyeongnam_old_changwon"]},"q_region_seoul_west":{"type":"question","text":"서울 생활권이라면, 주 활동 가능 지역이 서울 서부권(마포·서대문·은평·양천·강서·영등포·구로·금천·동작)인가요?","yes":"q_seoul_west_direct","no":"q_seoul_east_central_direct","candidateIds":["seoul_youth_outschool","seoul_west_dis_mapo","seoul_west_dis_sdm","seoul_west_dis_ydp","seoul_west_old_ydp_senior","seoul_west_animal_mapo","seoul_all_env_hangang","seoul_all_resource_beautiful","seoul_east_dis_scbid","seoul_east_old_seoulnoin","seoul_east_visual","seoul_east_social_madeul","seoul_east_social_kangnam","seoul_east_religion_taiwha","seoul_east_animal_ddm"]},"q_region_suwon":{"type":"question","text":"수원·용인·화성·오산 생활권이 더 편한가요?","yes":"q_suwon_nearby_direct","no":"q_region_pangyo","candidateIds":["suwon_dis_rehab","suwon_old_paldal","suwon_old_gwanggyo","hwaseong_old_dongtan","suwon_animal_center","hwaseong_animal_banlyeomaru","yongin_dis_heart4u","suwon_env_botanic","suwon_youth_dadream","pangyo_seongnam_dis_rehab21","pangyo_seongnam_old_pangyo","pangyo_seongnam_social_pangyo","pangyo_seongnam_library","pangyo_seongnam_youth_center","pangyo_seongnam_animal_env_group","geoje_gyeongnam_dis_geoje","geoje_gyeongnam_social_geoje","geoje_gyeongnam_social_okpo","geoje_gyeongnam_old_seniorclub","geoje_gyeongnam_social_tongyeong","geoje_gyeongnam_dis_changwon","geoje_gyeongnam_old_changwon"]},"q_region_pangyo":{"type":"question","text":"성남·판교·분당 생활권이 더 편한가요?","yes":"q_pangyo_seongnam_direct","no":"q_region_geoje","candidateIds":["pangyo_seongnam_dis_rehab21","pangyo_seongnam_old_pangyo","pangyo_seongnam_social_pangyo","pangyo_seongnam_library","pangyo_seongnam_youth_center","pangyo_seongnam_animal_env_group","geoje_gyeongnam_dis_geoje","geoje_gyeongnam_social_geoje","geoje_gyeongnam_social_okpo","geoje_gyeongnam_old_seniorclub","geoje_gyeongnam_social_tongyeong","geoje_gyeongnam_dis_changwon","geoje_gyeongnam_old_changwon"]},"q_region_geoje":{"type":"question","text":"거제·통영·창원 등 경남권에서 참여하려고 하나요?","yes":"q_geoje_gyeongnam_direct","no":"r_national_general","candidateIds":["geoje_gyeongnam_dis_geoje","geoje_gyeongnam_social_geoje","geoje_gyeongnam_social_okpo","geoje_gyeongnam_old_seniorclub","geoje_gyeongnam_social_tongyeong","geoje_gyeongnam_dis_changwon","geoje_gyeongnam_old_changwon"]},"q_seoul_west_direct":{"type":"question","text":"사람을 직접 만나 돕는 봉사가 괜찮나요?","yes":"q_seoul_west_youth","no":"q_seoul_west_animal","candidateIds":["seoul_youth_outschool","seoul_west_dis_mapo","seoul_west_dis_sdm","seoul_west_dis_ydp","seoul_west_old_ydp_senior","seoul_west_animal_mapo","seoul_all_env_hangang","seoul_all_resource_beautiful"]},"q_seoul_west_youth":{"type":"question","text":"학생·청소년 교육/멘토링 또는 도서관형 활동에 관심이 큰가요?","yes":"q_seoul_west_youth_religious","no":"q_seoul_west_disability","candidateIds":["seoul_youth_outschool","seoul_west_dis_mapo","seoul_west_dis_sdm","seoul_west_dis_ydp","seoul_west_old_ydp_senior"]},"q_seoul_west_youth_religious":{"type":"question","text":"종교적 색채가 있어도 괜찮나요?","yes":"r_seoul_west_youth_religious","no":"r_seoul_west_youth","candidateIds":["seoul_youth_outschool"]},"q_seoul_west_disability":{"type":"question","text":"장애인과 함께하는 활동이 괜찮나요?","yes":"r_seoul_west_disability","no":"q_seoul_west_senior","candidateIds":["seoul_west_dis_mapo","seoul_west_dis_sdm","seoul_west_dis_ydp","seoul_west_old_ydp_senior"]},"q_seoul_west_senior":{"type":"question","text":"어르신 지원 활동이 괜찮나요?","yes":"r_seoul_west_senior","no":"q_seoul_west_community","candidateIds":["seoul_west_dis_mapo","seoul_west_dis_sdm","seoul_west_dis_ydp","seoul_west_old_ydp_senior","seoul_all_resource_beautiful"]},"q_seoul_west_community":{"type":"question","text":"복지관·도서관·행사 운영처럼 지역사회형 활동이 좋나요?","yes":"r_seoul_west_community","no":"r_seoul_west_general_people","candidateIds":["seoul_west_dis_mapo","seoul_west_dis_sdm","seoul_west_dis_ydp","seoul_all_resource_beautiful"]},"q_seoul_west_animal":{"type":"question","text":"동물과 직접 교감하거나 생태 성격의 활동이 더 좋나요?","yes":"q_seoul_west_animal_regular","no":"q_seoul_west_environment","candidateIds":["seoul_west_dis_sdm","seoul_west_animal_mapo","seoul_all_env_hangang","seoul_all_resource_beautiful"]},"q_seoul_west_animal_regular":{"type":"question","text":"3개월 동안 5회 이상 정도로 비교적 꾸준히 참여할 수 있나요?","yes":"r_seoul_west_animal","no":"q_seoul_west_indoor","candidateIds":["seoul_west_animal_mapo"]},"q_seoul_west_environment":{"type":"question","text":"야외·환경·정리정돈 성격의 활동이 좋나요?","yes":"r_seoul_west_environment","no":"q_seoul_west_indoor","candidateIds":["seoul_west_dis_sdm","seoul_all_env_hangang","seoul_all_resource_beautiful"]},"q_seoul_west_indoor":{"type":"question","text":"조용한 실내·자료정리·도서관형 활동이 좋나요?","yes":"r_seoul_west_indoor","no":"r_seoul_west_low_barrier","candidateIds":["seoul_west_dis_mapo","seoul_west_dis_sdm","seoul_west_dis_ydp","seoul_all_resource_beautiful"]},"q_seoul_east_central_direct":{"type":"question","text":"사람을 직접 만나 돕는 봉사가 괜찮나요?","yes":"q_seoul_east_central_youth","no":"q_seoul_east_central_animal","candidateIds":["seoul_youth_outschool","seoul_east_dis_scbid","seoul_east_old_seoulnoin","seoul_east_visual","seoul_east_social_madeul","seoul_east_social_kangnam","seoul_east_religion_taiwha","seoul_east_animal_ddm","seoul_all_env_hangang","seoul_all_resource_beautiful"]},"q_seoul_east_central_youth":{"type":"question","text":"학생·청소년 교육/멘토링 또는 도서관형 활동에 관심이 큰가요?","yes":"q_seoul_east_central_youth_religious","no":"q_seoul_east_central_disability","candidateIds":["seoul_youth_outschool","seoul_east_dis_scbid","seoul_east_old_seoulnoin","seoul_east_visual","seoul_east_social_madeul","seoul_east_social_kangnam","seoul_east_religion_taiwha"]},"q_seoul_east_central_youth_religious":{"type":"question","text":"종교적 색채가 있어도 괜찮나요?","yes":"r_seoul_east_central_youth_religious","no":"r_seoul_east_central_youth","candidateIds":["seoul_youth_outschool","seoul_east_social_kangnam"]},"q_seoul_east_central_disability":{"type":"question","text":"장애인과 함께하는 활동이 괜찮나요?","yes":"r_seoul_east_central_disability","no":"q_seoul_east_central_senior","candidateIds":["seoul_east_dis_scbid","seoul_east_old_seoulnoin","seoul_east_visual","seoul_east_social_madeul","seoul_east_social_kangnam","seoul_east_religion_taiwha"]},"q_seoul_east_central_senior":{"type":"question","text":"어르신 지원 활동이 괜찮나요?","yes":"r_seoul_east_central_senior","no":"q_seoul_east_central_community","candidateIds":["seoul_east_dis_scbid","seoul_east_old_seoulnoin","seoul_east_visual","seoul_east_social_madeul","seoul_east_social_kangnam","seoul_east_religion_taiwha","seoul_all_resource_beautiful"]},"q_seoul_east_central_community":{"type":"question","text":"복지관·도서관·행사 운영처럼 지역사회형 활동이 좋나요?","yes":"r_seoul_east_central_community","no":"r_seoul_east_central_general_people","candidateIds":["seoul_east_dis_scbid","seoul_east_old_seoulnoin","seoul_east_visual","seoul_east_social_madeul","seoul_east_social_kangnam","seoul_east_religion_taiwha","seoul_all_resource_beautiful"]},"q_seoul_east_central_animal":{"type":"question","text":"동물과 직접 교감하거나 생태 성격의 활동이 더 좋나요?","yes":"q_seoul_east_central_animal_regular","no":"q_seoul_east_central_environment","candidateIds":["seoul_east_visual","seoul_east_religion_taiwha","seoul_east_animal_ddm","seoul_all_env_hangang","seoul_all_resource_beautiful"]},"q_seoul_east_central_animal_regular":{"type":"question","text":"한 달 기준 4회 이상 정도로 비교적 꾸준히 참여할 수 있나요?","yes":"r_seoul_east_central_animal","no":"q_seoul_east_central_indoor","candidateIds":["seoul_east_animal_ddm"]},"q_seoul_east_central_environment":{"type":"question","text":"야외·환경·정리정돈 성격의 활동이 좋나요?","yes":"r_seoul_east_central_environment","no":"q_seoul_east_central_indoor","candidateIds":["seoul_east_visual","seoul_east_religion_taiwha","seoul_all_env_hangang","seoul_all_resource_beautiful"]},"q_seoul_east_central_indoor":{"type":"question","text":"조용한 실내·자료정리·도서관형 활동이 좋나요?","yes":"r_seoul_east_central_indoor","no":"r_seoul_east_central_low_barrier","candidateIds":["seoul_east_dis_scbid","seoul_east_old_seoulnoin","seoul_east_visual","seoul_east_social_madeul","seoul_east_social_kangnam","seoul_east_religion_taiwha","seoul_all_resource_beautiful"]},"q_suwon_nearby_direct":{"type":"question","text":"사람을 직접 만나 돕는 봉사가 괜찮나요?","yes":"q_suwon_nearby_youth","no":"q_suwon_nearby_animal","candidateIds":["suwon_dis_rehab","suwon_old_paldal","suwon_old_gwanggyo","hwaseong_old_dongtan","suwon_animal_center","hwaseong_animal_banlyeomaru","yongin_dis_heart4u","suwon_env_botanic","suwon_youth_dadream"]},"q_suwon_nearby_youth":{"type":"question","text":"학생·청소년 교육/멘토링 또는 도서관형 활동에 관심이 큰가요?","yes":"q_suwon_nearby_youth_religious","no":"q_suwon_nearby_disability","candidateIds":["suwon_dis_rehab","suwon_old_paldal","suwon_old_gwanggyo","hwaseong_old_dongtan","yongin_dis_heart4u","suwon_youth_dadream"]},"q_suwon_nearby_youth_religious":{"type":"question","text":"종교적 색채가 있어도 괜찮나요?","yes":"r_suwon_nearby_youth_religious","no":"r_suwon_nearby_youth","candidateIds":["suwon_youth_dadream"]},"q_suwon_nearby_disability":{"type":"question","text":"장애인과 함께하는 활동이 괜찮나요?","yes":"r_suwon_nearby_disability","no":"q_suwon_nearby_senior","candidateIds":["suwon_dis_rehab","suwon_old_paldal","suwon_old_gwanggyo","hwaseong_old_dongtan","yongin_dis_heart4u","suwon_youth_dadream"]},"q_suwon_nearby_senior":{"type":"question","text":"어르신 지원 활동이 괜찮나요?","yes":"r_suwon_nearby_senior","no":"q_suwon_nearby_community","candidateIds":["suwon_dis_rehab","suwon_old_paldal","suwon_old_gwanggyo","hwaseong_old_dongtan","yongin_dis_heart4u","suwon_youth_dadream"]},"q_suwon_nearby_community":{"type":"question","text":"복지관·도서관·행사 운영처럼 지역사회형 활동이 좋나요?","yes":"r_suwon_nearby_community","no":"r_suwon_nearby_general_people","candidateIds":["suwon_dis_rehab","suwon_old_paldal","yongin_dis_heart4u","suwon_youth_dadream"]},"q_suwon_nearby_animal":{"type":"question","text":"동물과 직접 교감하거나 생태 성격의 활동이 더 좋나요?","yes":"q_suwon_nearby_animal_regular","no":"q_suwon_nearby_environment","candidateIds":["suwon_animal_center","hwaseong_animal_banlyeomaru","suwon_env_botanic","suwon_youth_dadream"]},"q_suwon_nearby_animal_regular":{"type":"question","text":"정기 또는 장기 봉사(월별 모집, 장기자원봉사 등)에 참여할 의향이 있나요?","yes":"r_suwon_nearby_animal","no":"q_suwon_nearby_indoor","candidateIds":["suwon_animal_center","hwaseong_animal_banlyeomaru"]},"q_suwon_nearby_environment":{"type":"question","text":"야외·환경·정리정돈 성격의 활동이 좋나요?","yes":"r_suwon_nearby_environment","no":"q_suwon_nearby_indoor","candidateIds":["suwon_env_botanic","suwon_youth_dadream"]},"q_suwon_nearby_indoor":{"type":"question","text":"조용한 실내·자료정리·도서관형 활동이 좋나요?","yes":"r_suwon_nearby_indoor","no":"r_suwon_nearby_low_barrier","candidateIds":["suwon_dis_rehab","suwon_old_paldal","yongin_dis_heart4u","suwon_youth_dadream"]},"q_pangyo_seongnam_direct":{"type":"question","text":"사람을 직접 만나 돕는 봉사가 괜찮나요?","yes":"q_pangyo_seongnam_youth","no":"q_pangyo_seongnam_animal","candidateIds":["pangyo_seongnam_dis_rehab21","pangyo_seongnam_old_pangyo","pangyo_seongnam_social_pangyo","pangyo_seongnam_library","pangyo_seongnam_youth_center","pangyo_seongnam_animal_env_group"]},"q_pangyo_seongnam_youth":{"type":"question","text":"학생·청소년 교육/멘토링 또는 도서관형 활동에 관심이 큰가요?","yes":"r_pangyo_seongnam_youth","no":"q_pangyo_seongnam_disability","candidateIds":["pangyo_seongnam_dis_rehab21","pangyo_seongnam_old_pangyo","pangyo_seongnam_social_pangyo","pangyo_seongnam_library","pangyo_seongnam_youth_center"]},"q_pangyo_seongnam_disability":{"type":"question","text":"장애인과 함께하는 활동이 괜찮나요?","yes":"r_pangyo_seongnam_disability","no":"q_pangyo_seongnam_senior","candidateIds":["pangyo_seongnam_dis_rehab21","pangyo_seongnam_old_pangyo","pangyo_seongnam_social_pangyo","pangyo_seongnam_library"]},"q_pangyo_seongnam_senior":{"type":"question","text":"어르신 지원 활동이 괜찮나요?","yes":"r_pangyo_seongnam_senior","no":"q_pangyo_seongnam_community","candidateIds":["pangyo_seongnam_dis_rehab21","pangyo_seongnam_old_pangyo","pangyo_seongnam_social_pangyo","pangyo_seongnam_library"]},"q_pangyo_seongnam_community":{"type":"question","text":"복지관·도서관·행사 운영처럼 지역사회형 활동이 좋나요?","yes":"r_pangyo_seongnam_community","no":"r_pangyo_seongnam_general_people","candidateIds":["pangyo_seongnam_dis_rehab21","pangyo_seongnam_old_pangyo","pangyo_seongnam_social_pangyo","pangyo_seongnam_library"]},"q_pangyo_seongnam_animal":{"type":"question","text":"동물과 직접 교감하거나 생태 성격의 활동이 더 좋나요?","yes":"r_pangyo_seongnam_animal","no":"q_pangyo_seongnam_environment","candidateIds":["pangyo_seongnam_library","pangyo_seongnam_animal_env_group"]},"q_pangyo_seongnam_environment":{"type":"question","text":"야외·환경·정리정돈 성격의 활동이 좋나요?","yes":"r_pangyo_seongnam_environment","no":"q_pangyo_seongnam_indoor","candidateIds":["pangyo_seongnam_library","pangyo_seongnam_animal_env_group"]},"q_pangyo_seongnam_indoor":{"type":"question","text":"조용한 실내·자료정리·도서관형 활동이 좋나요?","yes":"r_pangyo_seongnam_indoor","no":"r_pangyo_seongnam_low_barrier","candidateIds":["pangyo_seongnam_dis_rehab21","pangyo_seongnam_old_pangyo","pangyo_seongnam_social_pangyo","pangyo_seongnam_library"]},"q_geoje_gyeongnam_direct":{"type":"question","text":"사람을 직접 만나 돕는 봉사가 괜찮나요?","yes":"q_geoje_gyeongnam_youth","no":"q_geoje_gyeongnam_animal","candidateIds":["geoje_gyeongnam_dis_geoje","geoje_gyeongnam_social_geoje","geoje_gyeongnam_social_okpo","geoje_gyeongnam_old_seniorclub","geoje_gyeongnam_social_tongyeong","geoje_gyeongnam_dis_changwon","geoje_gyeongnam_old_changwon"]},"q_geoje_gyeongnam_youth":{"type":"question","text":"학생·청소년 교육/멘토링 또는 도서관형 활동에 관심이 큰가요?","yes":"r_geoje_gyeongnam_youth","no":"q_geoje_gyeongnam_disability","candidateIds":["geoje_gyeongnam_dis_geoje","geoje_gyeongnam_social_geoje","geoje_gyeongnam_social_okpo","geoje_gyeongnam_old_seniorclub","geoje_gyeongnam_social_tongyeong","geoje_gyeongnam_dis_changwon","geoje_gyeongnam_old_changwon"]},"q_geoje_gyeongnam_disability":{"type":"question","text":"장애인과 함께하는 활동이 괜찮나요?","yes":"r_geoje_gyeongnam_disability","no":"q_geoje_gyeongnam_senior","candidateIds":["geoje_gyeongnam_dis_geoje","geoje_gyeongnam_social_geoje","geoje_gyeongnam_social_okpo","geoje_gyeongnam_old_seniorclub","geoje_gyeongnam_social_tongyeong","geoje_gyeongnam_dis_changwon","geoje_gyeongnam_old_changwon"]},"q_geoje_gyeongnam_senior":{"type":"question","text":"어르신 지원 활동이 괜찮나요?","yes":"r_geoje_gyeongnam_senior","no":"q_geoje_gyeongnam_community","candidateIds":["geoje_gyeongnam_dis_geoje","geoje_gyeongnam_social_geoje","geoje_gyeongnam_social_okpo","geoje_gyeongnam_old_seniorclub","geoje_gyeongnam_social_tongyeong","geoje_gyeongnam_dis_changwon","geoje_gyeongnam_old_changwon"]},"q_geoje_gyeongnam_community":{"type":"question","text":"복지관·도서관·행사 운영처럼 지역사회형 활동이 좋나요?","yes":"r_geoje_gyeongnam_community","no":"r_geoje_gyeongnam_general_people","candidateIds":["geoje_gyeongnam_dis_geoje","geoje_gyeongnam_social_geoje","geoje_gyeongnam_social_okpo","geoje_gyeongnam_social_tongyeong","geoje_gyeongnam_dis_changwon"]},"q_geoje_gyeongnam_animal":{"type":"question","text":"동물과 직접 교감하거나 생태 성격의 활동이 더 좋나요?","yes":"r_geoje_gyeongnam_animal","no":"q_geoje_gyeongnam_environment","candidateIds":["geoje_gyeongnam_social_geoje","geoje_gyeongnam_social_okpo"]},"q_geoje_gyeongnam_environment":{"type":"question","text":"야외·환경·정리정돈 성격의 활동이 좋나요?","yes":"r_geoje_gyeongnam_environment","no":"q_geoje_gyeongnam_indoor","candidateIds":["geoje_gyeongnam_social_geoje","geoje_gyeongnam_social_okpo"]},"q_geoje_gyeongnam_indoor":{"type":"question","text":"조용한 실내·자료정리·도서관형 활동이 좋나요?","yes":"r_geoje_gyeongnam_indoor","no":"r_geoje_gyeongnam_low_barrier","candidateIds":["geoje_gyeongnam_dis_geoje","geoje_gyeongnam_social_geoje","geoje_gyeongnam_social_okpo","geoje_gyeongnam_social_tongyeong","geoje_gyeongnam_dis_changwon"]}},"results":{"r_seoul_west_youth":{"title":"서울 서부권 · 교육/멘토링 중심","description":"학생·청소년 지원, 책 읽어주기, 도서관형 활동 쪽에 무게를 둔 결과","primaryIds":["seoul_youth_outschool"],"secondaryIds":["seoul_all_resource_beautiful"],"fallbackIds":["platform_1365","platform_vms"]},"r_seoul_west_youth_religious":{"title":"서울 서부권 · 교육/멘토링 + 종교연계 허용","description":"교육 축은 유지하되 종교계 복지 네트워크까지 함께 열어 둔 결과","primaryIds":["seoul_youth_outschool","platform_seoul_caritas"],"secondaryIds":[],"fallbackIds":["platform_1365","platform_vms"]},"r_seoul_west_disability":{"title":"서울 서부권 · 장애인 봉사 중심","description":"장애인 프로그램 보조, 생활지원, 정서·교육 지원 쪽으로 추천","primaryIds":["seoul_west_dis_mapo","seoul_west_dis_sdm"],"secondaryIds":["seoul_west_dis_ydp"],"fallbackIds":["platform_vms"]},"r_seoul_west_senior":{"title":"서울 서부권 · 어르신 지원 중심","description":"배식, 식사보조, 재가·행정지원, 프로그램실 보조 같은 활동을 우선 추천","primaryIds":["seoul_west_old_ydp_senior"],"secondaryIds":["seoul_all_resource_beautiful"],"fallbackIds":["platform_vms","platform_1365"]},"r_seoul_west_community":{"title":"서울 서부권 · 지역사회형 봉사","description":"특정 대상군보다 복지관·도서관·행사 운영 지원에 가까운 결과","primaryIds":["seoul_all_resource_beautiful","platform_seoul_district_centers"],"secondaryIds":["seoul_all_resource_beautiful"],"fallbackIds":["platform_seoul_district_centers","platform_1365"]},"r_seoul_west_general_people":{"title":"서울 서부권 · 사람 대상 일반 탐색","description":"세부 선호가 뚜렷하지 않을 때 지역 플랫폼에서 현재 공고를 먼저 보는 경로","primaryIds":["platform_seoul_district_centers","platform_1365"],"secondaryIds":["seoul_all_resource_beautiful"],"fallbackIds":["platform_vms","platform_center_finder"]},"r_seoul_west_animal":{"title":"서울 서부권 · 동물/생태 성향 중심","description":"동물 교감 또는 반려·생태 성격의 활동을 우선으로 둔 결과","primaryIds":["seoul_west_animal_mapo"],"secondaryIds":["seoul_all_env_hangang"],"fallbackIds":["platform_1365","platform_center_finder"]},"r_seoul_west_environment":{"title":"서울 서부권 · 환경/야외 봉사 중심","description":"야외, 환경정화, 생태, 정원관리 성격이 더 잘 맞는 결과","primaryIds":["seoul_all_env_hangang"],"secondaryIds":["seoul_west_animal_mapo"],"fallbackIds":["platform_seoul_district_centers","platform_1365"]},"r_seoul_west_indoor":{"title":"서울 서부권 · 조용한 실내형","description":"도서관, 자료정리, 행정·실내 운영 보조 같은 상대적으로 저자극인 결과","primaryIds":["seoul_all_resource_beautiful"],"secondaryIds":["seoul_all_resource_beautiful"],"fallbackIds":["platform_seoul_district_centers","platform_1365"]},"r_seoul_west_low_barrier":{"title":"서울 서부권 · 진입장벽 낮은 탐색형","description":"정기 약속은 부담스럽고 공고형·단기형으로 가볍게 시작하고 싶은 결과","primaryIds":["seoul_all_resource_beautiful","platform_1365"],"secondaryIds":["seoul_all_resource_beautiful"],"fallbackIds":["platform_1365","platform_center_finder"]},"r_seoul_east_central_youth":{"title":"서울 동부·중심·강남권 · 교육/멘토링 중심","description":"학생·청소년 지원, 책 읽어주기, 도서관형 활동 쪽에 무게를 둔 결과","primaryIds":["seoul_youth_outschool","seoul_east_social_kangnam"],"secondaryIds":["seoul_east_social_madeul"],"fallbackIds":["platform_1365","platform_vms"]},"r_seoul_east_central_youth_religious":{"title":"서울 동부·중심·강남권 · 교육/멘토링 + 종교연계 허용","description":"교육 축은 유지하되 종교계 복지 네트워크까지 함께 열어 둔 결과","primaryIds":["seoul_east_religion_taiwha","seoul_youth_outschool"],"secondaryIds":["seoul_east_social_kangnam"],"fallbackIds":["platform_1365","platform_vms"]},"r_seoul_east_central_disability":{"title":"서울 동부·중심·강남권 · 장애인 봉사 중심","description":"장애인 프로그램 보조, 생활지원, 정서·교육 지원 쪽으로 추천","primaryIds":["seoul_east_dis_scbid","seoul_east_visual"],"secondaryIds":[],"fallbackIds":["platform_vms"]},"r_seoul_east_central_senior":{"title":"서울 동부·중심·강남권 · 어르신 지원 중심","description":"배식, 식사보조, 재가·행정지원, 프로그램실 보조 같은 활동을 우선 추천","primaryIds":["seoul_east_old_seoulnoin","seoul_east_social_kangnam"],"secondaryIds":["seoul_east_social_madeul"],"fallbackIds":["platform_vms","platform_1365"]},"r_seoul_east_central_community":{"title":"서울 동부·중심·강남권 · 지역사회형 봉사","description":"특정 대상군보다 복지관·도서관·행사 운영 지원에 가까운 결과","primaryIds":["seoul_east_social_madeul","seoul_east_social_kangnam"],"secondaryIds":["seoul_east_visual"],"fallbackIds":["platform_seoul_district_centers","platform_1365"]},"r_seoul_east_central_general_people":{"title":"서울 동부·중심·강남권 · 사람 대상 일반 탐색","description":"세부 선호가 뚜렷하지 않을 때 지역 플랫폼에서 현재 공고를 먼저 보는 경로","primaryIds":["platform_seoul_district_centers","platform_1365"],"secondaryIds":["seoul_east_social_madeul"],"fallbackIds":["platform_vms","platform_center_finder"]},"r_seoul_east_central_animal":{"title":"서울 동부·중심·강남권 · 동물/생태 성향 중심","description":"동물 교감 또는 반려·생태 성격의 활동을 우선으로 둔 결과","primaryIds":["seoul_east_animal_ddm"],"secondaryIds":["seoul_all_env_hangang"],"fallbackIds":["platform_1365","platform_center_finder"]},"r_seoul_east_central_environment":{"title":"서울 동부·중심·강남권 · 환경/야외 봉사 중심","description":"야외, 환경정화, 생태, 정원관리 성격이 더 잘 맞는 결과","primaryIds":["seoul_all_env_hangang"],"secondaryIds":["seoul_east_animal_ddm"],"fallbackIds":["platform_seoul_district_centers","platform_1365"]},"r_seoul_east_central_indoor":{"title":"서울 동부·중심·강남권 · 조용한 실내형","description":"도서관, 자료정리, 행정·실내 운영 보조 같은 상대적으로 저자극인 결과","primaryIds":["seoul_east_visual","seoul_all_resource_beautiful"],"secondaryIds":["seoul_east_social_madeul"],"fallbackIds":["platform_seoul_district_centers","platform_1365"]},"r_seoul_east_central_low_barrier":{"title":"서울 동부·중심·강남권 · 진입장벽 낮은 탐색형","description":"정기 약속은 부담스럽고 공고형·단기형으로 가볍게 시작하고 싶은 결과","primaryIds":["seoul_all_resource_beautiful","platform_1365"],"secondaryIds":["seoul_east_visual"],"fallbackIds":["platform_1365","platform_center_finder"]},"r_suwon_nearby_youth":{"title":"수원·용인·화성·오산권 · 교육/멘토링 중심","description":"학생·청소년 지원, 책 읽어주기, 도서관형 활동 쪽에 무게를 둔 결과","primaryIds":["suwon_youth_dadream"],"secondaryIds":["platform_suwon_vol"],"fallbackIds":["platform_1365","platform_vms"]},"r_suwon_nearby_youth_religious":{"title":"수원·용인·화성·오산권 · 교육/멘토링 + 종교연계 허용","description":"교육 축은 유지하되 종교계 복지 네트워크까지 함께 열어 둔 결과","primaryIds":["suwon_youth_dadream","platform_suwon_catholic"],"secondaryIds":[],"fallbackIds":["platform_1365","platform_vms"]},"r_suwon_nearby_disability":{"title":"수원·용인·화성·오산권 · 장애인 봉사 중심","description":"장애인 프로그램 보조, 생활지원, 정서·교육 지원 쪽으로 추천","primaryIds":["suwon_dis_rehab","yongin_dis_heart4u"],"secondaryIds":[],"fallbackIds":["platform_vms"]},"r_suwon_nearby_senior":{"title":"수원·용인·화성·오산권 · 어르신 지원 중심","description":"배식, 식사보조, 재가·행정지원, 프로그램실 보조 같은 활동을 우선 추천","primaryIds":["suwon_old_paldal","suwon_old_gwanggyo"],"secondaryIds":["platform_suwon_vol"],"fallbackIds":["platform_vms","platform_1365"]},"r_suwon_nearby_community":{"title":"수원·용인·화성·오산권 · 지역사회형 봉사","description":"특정 대상군보다 복지관·도서관·행사 운영 지원에 가까운 결과","primaryIds":["platform_suwon_vol","platform_hwaseong_vol"],"secondaryIds":["suwon_youth_dadream"],"fallbackIds":["platform_suwon_vol","platform_hwaseong_vol"]},"r_suwon_nearby_general_people":{"title":"수원·용인·화성·오산권 · 사람 대상 일반 탐색","description":"세부 선호가 뚜렷하지 않을 때 지역 플랫폼에서 현재 공고를 먼저 보는 경로","primaryIds":["platform_suwon_vol","platform_hwaseong_vol"],"secondaryIds":["platform_suwon_vol"],"fallbackIds":["platform_vms","platform_center_finder"]},"r_suwon_nearby_animal":{"title":"수원·용인·화성·오산권 · 동물/생태 성향 중심","description":"동물 교감 또는 반려·생태 성격의 활동을 우선으로 둔 결과","primaryIds":["suwon_animal_center","hwaseong_animal_banlyeomaru"],"secondaryIds":["suwon_env_botanic"],"fallbackIds":["platform_1365","platform_center_finder"]},"r_suwon_nearby_environment":{"title":"수원·용인·화성·오산권 · 환경/야외 봉사 중심","description":"야외, 환경정화, 생태, 정원관리 성격이 더 잘 맞는 결과","primaryIds":["suwon_env_botanic"],"secondaryIds":["suwon_animal_center"],"fallbackIds":["platform_suwon_vol","platform_hwaseong_vol"]},"r_suwon_nearby_indoor":{"title":"수원·용인·화성·오산권 · 조용한 실내형","description":"도서관, 자료정리, 행정·실내 운영 보조 같은 상대적으로 저자극인 결과","primaryIds":["suwon_youth_dadream","platform_suwon_vol"],"secondaryIds":["platform_suwon_vol"],"fallbackIds":["platform_suwon_vol","platform_hwaseong_vol"]},"r_suwon_nearby_low_barrier":{"title":"수원·용인·화성·오산권 · 진입장벽 낮은 탐색형","description":"정기 약속은 부담스럽고 공고형·단기형으로 가볍게 시작하고 싶은 결과","primaryIds":["platform_suwon_vol","platform_gg_vol"],"secondaryIds":["suwon_youth_dadream"],"fallbackIds":["platform_1365","platform_center_finder"]},"r_pangyo_seongnam_youth":{"title":"성남·판교·분당권 · 교육/멘토링 중심","description":"학생·청소년 지원, 책 읽어주기, 도서관형 활동 쪽에 무게를 둔 결과","primaryIds":["pangyo_seongnam_youth_center","pangyo_seongnam_library"],"secondaryIds":["pangyo_seongnam_social_pangyo"],"fallbackIds":["platform_1365","platform_vms"]},"r_pangyo_seongnam_disability":{"title":"성남·판교·분당권 · 장애인 봉사 중심","description":"장애인 프로그램 보조, 생활지원, 정서·교육 지원 쪽으로 추천","primaryIds":["pangyo_seongnam_dis_rehab21"],"secondaryIds":[],"fallbackIds":["platform_vms"]},"r_pangyo_seongnam_senior":{"title":"성남·판교·분당권 · 어르신 지원 중심","description":"배식, 식사보조, 재가·행정지원, 프로그램실 보조 같은 활동을 우선 추천","primaryIds":["pangyo_seongnam_old_pangyo"],"secondaryIds":["pangyo_seongnam_social_pangyo"],"fallbackIds":["platform_vms","platform_1365"]},"r_pangyo_seongnam_community":{"title":"성남·판교·분당권 · 지역사회형 봉사","description":"특정 대상군보다 복지관·도서관·행사 운영 지원에 가까운 결과","primaryIds":["pangyo_seongnam_social_pangyo","pangyo_seongnam_youth_center"],"secondaryIds":["pangyo_seongnam_library"],"fallbackIds":["platform_seongnam_vol","platform_gg_vol"]},"r_pangyo_seongnam_general_people":{"title":"성남·판교·분당권 · 사람 대상 일반 탐색","description":"세부 선호가 뚜렷하지 않을 때 지역 플랫폼에서 현재 공고를 먼저 보는 경로","primaryIds":["platform_seongnam_vol","platform_gg_vol"],"secondaryIds":["pangyo_seongnam_social_pangyo"],"fallbackIds":["platform_vms","platform_center_finder"]},"r_pangyo_seongnam_animal":{"title":"성남·판교·분당권 · 동물/생태 성향 중심","description":"동물 교감 또는 반려·생태 성격의 활동을 우선으로 둔 결과","primaryIds":["pangyo_seongnam_animal_env_group","platform_seongnam_vol"],"secondaryIds":["pangyo_seongnam_animal_env_group"],"fallbackIds":["platform_1365","platform_center_finder"]},"r_pangyo_seongnam_environment":{"title":"성남·판교·분당권 · 환경/야외 봉사 중심","description":"야외, 환경정화, 생태, 정원관리 성격이 더 잘 맞는 결과","primaryIds":["pangyo_seongnam_animal_env_group","platform_seongnam_vol"],"secondaryIds":["pangyo_seongnam_animal_env_group"],"fallbackIds":["platform_seongnam_vol","platform_gg_vol"]},"r_pangyo_seongnam_indoor":{"title":"성남·판교·분당권 · 조용한 실내형","description":"도서관, 자료정리, 행정·실내 운영 보조 같은 상대적으로 저자극인 결과","primaryIds":["pangyo_seongnam_library","pangyo_seongnam_social_pangyo"],"secondaryIds":["pangyo_seongnam_social_pangyo"],"fallbackIds":["platform_seongnam_vol","platform_gg_vol"]},"r_pangyo_seongnam_low_barrier":{"title":"성남·판교·분당권 · 진입장벽 낮은 탐색형","description":"정기 약속은 부담스럽고 공고형·단기형으로 가볍게 시작하고 싶은 결과","primaryIds":["platform_seongnam_vol","platform_gg_vol"],"secondaryIds":["pangyo_seongnam_library"],"fallbackIds":["platform_1365","platform_center_finder"]},"r_geoje_gyeongnam_youth":{"title":"거제·통영·창원 등 경남권 · 교육/멘토링 중심","description":"학생·청소년 지원, 책 읽어주기, 도서관형 활동 쪽에 무게를 둔 결과","primaryIds":["geoje_gyeongnam_social_okpo","geoje_gyeongnam_social_geoje"],"secondaryIds":[],"fallbackIds":["platform_1365","platform_vms"]},"r_geoje_gyeongnam_disability":{"title":"거제·통영·창원 등 경남권 · 장애인 봉사 중심","description":"장애인 프로그램 보조, 생활지원, 정서·교육 지원 쪽으로 추천","primaryIds":["geoje_gyeongnam_dis_geoje","geoje_gyeongnam_dis_changwon"],"secondaryIds":[],"fallbackIds":["platform_vms"]},"r_geoje_gyeongnam_senior":{"title":"거제·통영·창원 등 경남권 · 어르신 지원 중심","description":"배식, 식사보조, 재가·행정지원, 프로그램실 보조 같은 활동을 우선 추천","primaryIds":["geoje_gyeongnam_old_seniorclub","geoje_gyeongnam_old_changwon"],"secondaryIds":["geoje_gyeongnam_social_geoje"],"fallbackIds":["platform_vms","platform_1365"]},"r_geoje_gyeongnam_community":{"title":"거제·통영·창원 등 경남권 · 지역사회형 봉사","description":"특정 대상군보다 복지관·도서관·행사 운영 지원에 가까운 결과","primaryIds":["geoje_gyeongnam_social_geoje","geoje_gyeongnam_social_tongyeong"],"secondaryIds":["geoje_gyeongnam_social_geoje"],"fallbackIds":["platform_geoje_vol","platform_changwon_vol"]},"r_geoje_gyeongnam_general_people":{"title":"거제·통영·창원 등 경남권 · 사람 대상 일반 탐색","description":"세부 선호가 뚜렷하지 않을 때 지역 플랫폼에서 현재 공고를 먼저 보는 경로","primaryIds":["platform_geoje_vol","platform_changwon_vol"],"secondaryIds":["geoje_gyeongnam_social_geoje"],"fallbackIds":["platform_vms","platform_center_finder"]},"r_geoje_gyeongnam_animal":{"title":"거제·통영·창원 등 경남권 · 동물/생태 성향 중심","description":"동물 교감 또는 반려·생태 성격의 활동을 우선으로 둔 결과","primaryIds":["platform_geoje_vol","platform_changwon_vol"],"secondaryIds":["geoje_gyeongnam_social_okpo"],"fallbackIds":["platform_1365","platform_center_finder"]},"r_geoje_gyeongnam_environment":{"title":"거제·통영·창원 등 경남권 · 환경/야외 봉사 중심","description":"야외, 환경정화, 생태, 정원관리 성격이 더 잘 맞는 결과","primaryIds":["geoje_gyeongnam_social_okpo","platform_geoje_vol"],"secondaryIds":["platform_geoje_vol"],"fallbackIds":["platform_geoje_vol","platform_changwon_vol"]},"r_geoje_gyeongnam_indoor":{"title":"거제·통영·창원 등 경남권 · 조용한 실내형","description":"도서관, 자료정리, 행정·실내 운영 보조 같은 상대적으로 저자극인 결과","primaryIds":["geoje_gyeongnam_social_geoje","geoje_gyeongnam_social_okpo"],"secondaryIds":["geoje_gyeongnam_social_geoje"],"fallbackIds":["platform_geoje_vol","platform_changwon_vol"]},"r_geoje_gyeongnam_low_barrier":{"title":"거제·통영·창원 등 경남권 · 진입장벽 낮은 탐색형","description":"정기 약속은 부담스럽고 공고형·단기형으로 가볍게 시작하고 싶은 결과","primaryIds":["platform_geoje_vol","platform_changwon_vol"],"secondaryIds":["geoje_gyeongnam_social_geoje"],"fallbackIds":["platform_1365","platform_center_finder"]},"r_national_general":{"title":"전국 기타 지역 · 플랫폼 중심 탐색","description":"현재 반영 권역 밖이라면 전국 플랫폼과 지역 자원봉사센터 찾기 페이지로 시작하는 편이 가장 안전합니다.","primaryIds":["platform_1365","platform_center_finder"],"secondaryIds":["platform_vms"],"fallbackIds":[]}}};
+
+    const state = {
+      data: APP_DATA,
+      currentId: APP_DATA.design.entryNodeId,
+      history: []
+    };
+
+    const els = {
+      appPanel: document.getElementById('appPanel'),
+      resultPanel: document.getElementById('resultPanel'),
+      questionText: document.getElementById('questionText'),
+      questionMeta: document.getElementById('questionMeta'),
+      candidateChips: document.getElementById('candidateChips'),
+      answerButtons: document.getElementById('answerButtons'),
+      path: document.getElementById('path'),
+      statusBadge: document.getElementById('statusBadge'),
+      yesBtn: document.getElementById('yesBtn'),
+      noBtn: document.getElementById('noBtn'),
+      backBtn: document.getElementById('backBtn'),
+      restartBtn: document.getElementById('restartBtn')
+    };
+
+    function getEntity(id) {
+      return state.data.centers?.[id] || state.data.platforms?.[id] || null;
+    }
+
+    function makeChip(text, accent = false) {
+      const span = document.createElement('span');
+      span.className = accent ? 'chip accent' : 'chip';
+      span.textContent = text;
+      return span;
+    }
+
+    function labelRegion(value) {
+      const map = {
+        seoul_west: '서울 서부권',
+        seoul_east_central: '서울 동부·중심·강남권',
+        suwon_nearby: '수원·용인·화성·오산권',
+        pangyo_seongnam: '성남·판교·분당권',
+        geoje_gyeongnam: '거제·통영·창원 등 경남권',
+        national_other: '전국 기타'
+      };
+      return map[value] || value;
+    }
+
+    function labelRegularity(value) {
+      const map = {
+        program_based: '프로그램형',
+        regular_or_seasonal: '정기/계절형',
+        regular_or_project: '정기/프로젝트형',
+        regular_or_event: '정기/이벤트형',
+        flexible: '유연형',
+        regular_required: '정기 필수',
+        seasonal: '계절형',
+        direct_or_notice: '직접신청/공지확인',
+        direct_or_platform: '직접신청/플랫폼병행',
+        project_or_event: '프로젝트/이벤트형',
+        regular_or_short: '정기/단기형',
+        seasonal_cohort: '시즌·기수형',
+        cohort_regular: '기수/정기형',
+        regular_preferred: '정기 선호',
+        periodic_opening: '수시 공고형',
+        registered_or_irregular: '등록단체/비정기'
+      };
+      return map[value] || value;
+    }
+
+    function labelContact(value) {
+      const map = {
+        direct: '직접 대면',
+        direct_or_platform: '직접/플랫폼 병행',
+        direct_or_notice: '직접/공지 확인',
+        indoor: '실내 중심',
+        outdoor: '야외 중심',
+        indirect_or_quiet: '비대면·조용한 실내형'
+      };
+      return map[value] || value;
+    }
+
+    function labelReligion(value) {
+      if (value === true) return '종교연계 가능';
+      if (value === false) return '종교색채 없음';
+      if (typeof value === 'string' && value.trim()) return value;
+      return '';
+    }
+
+    function escapeHtml(str) {
+      return String(str)
+        .replaceAll('&', '&amp;')
+        .replaceAll('<', '&lt;')
+        .replaceAll('>', '&gt;')
+        .replaceAll('"', '&quot;')
+        .replaceAll("'", '&#039;');
+    }
+
+    function renderPath() {
+      els.path.innerHTML = '';
+      if (!state.history.length) return;
+
+      state.history.forEach((step, idx) => {
+        const item = document.createElement('span');
+        item.className = 'path-item';
+        const answerText = step.answer === 'yes' ? '예' : '아니오';
+        item.textContent = `${idx + 1}. ${answerText}`;
+        item.title = step.text;
+        els.path.appendChild(item);
+      });
+    }
+
+    function renderCandidates(node) {
+      els.candidateChips.innerHTML = '';
+      const ids = node.candidateIds || [];
+      els.candidateChips.appendChild(makeChip(`현재 후보 ${ids.length}개`, true));
+
+      const preview = ids.slice(0, 6)
+        .map(id => getEntity(id)?.name)
+        .filter(Boolean);
+
+      preview.forEach(name => els.candidateChips.appendChild(makeChip(name)));
+      if (ids.length > 6) {
+        els.candidateChips.appendChild(makeChip(`외 ${ids.length - 6}개`));
+      }
+    }
+
+    function createEntityCard(id, emphasis) {
+      const entity = getEntity(id);
+      if (!entity) return null;
+
+      const div = document.createElement('article');
+      div.className = 'card';
+
+      const title = document.createElement('h3');
+      title.textContent = entity.name;
+      div.appendChild(title);
+
+      const p = document.createElement('p');
+      p.textContent = entity.summary || '설명 없음';
+      div.appendChild(p);
+
+      const meta = document.createElement('div');
+      meta.className = 'meta';
+      meta.appendChild(makeChip(emphasis, true));
+
+      (entity.regionBuckets || []).forEach(x => meta.appendChild(makeChip(`권역: ${labelRegion(x)}`)));
+      (entity.themes || []).slice(0, 4).forEach(x => meta.appendChild(makeChip(x)));
+
+      const religion = labelReligion(entity.religiousTone);
+      if (religion) meta.appendChild(makeChip(religion));
+
+      if (entity.regularity) meta.appendChild(makeChip(`참여형태: ${labelRegularity(entity.regularity)}`));
+      if (entity.contactStyle) meta.appendChild(makeChip(`방식: ${labelContact(entity.contactStyle)}`));
+
+      div.appendChild(meta);
+
+      const actionRow = document.createElement('div');
+      actionRow.className = 'card-actions';
+
+      if (entity.officialUrl) {
+        const a = document.createElement('a');
+        a.href = entity.officialUrl;
+        a.target = '_blank';
+        a.rel = 'noopener noreferrer';
+        a.className = 'link-button';
+        a.textContent = '기관/안내 보기';
+        actionRow.appendChild(a);
+      }
+
+      if (entity.applyUrl) {
+        const a2 = document.createElement('a');
+        a2.href = entity.applyUrl;
+        a2.target = '_blank';
+        a2.rel = 'noopener noreferrer';
+        a2.className = 'link-button secondary';
+        a2.textContent = '신청/공고 보기';
+        actionRow.appendChild(a2);
+      }
+
+      div.appendChild(actionRow);
+      return div;
+    }
+
+    function renderQuestion(node) {
+      els.statusBadge.textContent = '추천 진행 중';
+      els.questionText.textContent = node.text;
+      const depth = state.history.length + 1;
+      const candidateCount = (node.candidateIds || []).length;
+      els.questionMeta.textContent = `질문 ${depth} · 현재 남아 있는 후보 ${candidateCount}개`;
+      renderCandidates(node);
+      renderPath();
+      els.answerButtons.classList.remove('hidden');
+      els.backBtn.disabled = state.history.length === 0;
+      els.resultPanel.classList.add('hidden');
+      els.resultPanel.innerHTML = '';
+    }
+
+
+    function isIOS() {
+      const ua = navigator.userAgent || navigator.vendor || window.opera || '';
+      return /iPad|iPhone|iPod/.test(ua) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+    }
+
+    function triggerAndroidVibration() {
+      if (isIOS()) return;
+      if (!('vibrate' in navigator) || typeof navigator.vibrate !== 'function') return;
+      try {
+        navigator.vibrate([80, 40, 120]);
+      } catch (err) {
+        console.debug('Vibration skipped:', err);
+      }
+    }
+
+    function triggerIOSResultAnimation() {
+      const cards = [els.appPanel, els.resultPanel].filter(Boolean);
+      cards.forEach(el => {
+        el.classList.remove('result-animate', 'result-highlight');
+        void el.offsetWidth;
+        el.classList.add('result-animate', 'result-highlight');
+      });
+      setTimeout(() => {
+        cards.forEach(el => el.classList.remove('result-highlight'));
+      }, 950);
+    }
+
+    function celebrateResult() {
+      triggerAndroidVibration();
+      triggerIOSResultAnimation();
+    }
+
+    function renderResult(resultId) {
+      const result = state.data.results[resultId];
+      els.resultPanel.classList.remove('hidden');
+      els.resultPanel.innerHTML = '';
+      els.statusBadge.textContent = '추천 결과';
+      celebrateResult();
+
+      const header = document.createElement('section');
+      header.className = 'panel';
+      header.innerHTML = `
+        <div class="panel-head">
+          <div class="eyebrow">결과 요약</div>
+          <div class="status">추천 결과</div>
+        </div>
+        <h2 class="question-title">${escapeHtml(result.title)}</h2>
+        <div class="small" style="margin-top:10px;">${escapeHtml(result.description || '')}</div>
+      `;
+      els.resultPanel.appendChild(header);
+
+      const sections = [
+        ['우선 추천', result.primaryIds || []],
+        ['보조 추천', result.secondaryIds || []],
+        ['실시간 탐색/대체 경로', result.fallbackIds || []]
+      ];
+
+      sections.forEach(([label, ids]) => {
+        if (!ids.length) return;
+
+        const section = document.createElement('section');
+        section.className = 'panel';
+
+        const title = document.createElement('h3');
+        title.className = 'section-title';
+        title.textContent = label;
+        section.appendChild(title);
+
+        const grid = document.createElement('div');
+        grid.className = 'grid';
+
+        ids.forEach(id => {
+          const card = createEntityCard(id, label);
+          if (card) grid.appendChild(card);
+        });
+
+        if (!grid.children.length) {
+          const empty = document.createElement('div');
+          empty.className = 'empty';
+          empty.textContent = '표시할 항목이 없습니다.';
+          section.appendChild(empty);
+        } else {
+          section.appendChild(grid);
+        }
+
+        els.resultPanel.appendChild(section);
+      });
+
+      const actions = document.createElement('section');
+      actions.className = 'panel';
+      actions.innerHTML = `
+        <div class="small">다른 조건으로 다시 보고 싶다면 이전 질문으로 돌아가거나 처음부터 다시 시작하면 됩니다.</div>
+        <div class="actions">
+          <button class="btn-sub" type="button" onclick="goBack()">이전 질문</button>
+          <button class="btn-sub" type="button" onclick="restart()">처음부터</button>
+        </div>
+      `;
+      els.resultPanel.appendChild(actions);
+    }
+
+    function answer(choice) {
+      const node = state.data.nodes[state.currentId];
+      const nextId = choice === 'yes' ? node.yes : node.no;
+      if (!nextId) return;
+      state.history.push({ nodeId: state.currentId, text: node.text, answer: choice });
+      state.currentId = nextId;
+      render();
+    }
+
+    function goBack() {
+      if (!state.history.length) return;
+      const prev = state.history.pop();
+      state.currentId = prev.nodeId;
+      render();
+    }
+
+    function restart() {
+      state.currentId = state.data.design.entryNodeId;
+      state.history = [];
+      render();
+    }
+
+    function render() {
+      const node = state.data.nodes[state.currentId];
+      if (node) {
+        renderQuestion(node);
+        return;
+      }
+
+      const result = state.data.results[state.currentId];
+      if (result) {
+        els.questionText.textContent = '추천 결과를 확인하세요.';
+        els.questionMeta.textContent = `답변 ${state.history.length}개를 반영했습니다.`;
+        els.candidateChips.innerHTML = '';
+        renderPath();
+        els.answerButtons.classList.add('hidden');
+        els.backBtn.disabled = state.history.length === 0;
+        renderResult(state.currentId);
+        return;
+      }
+
+      els.questionText.textContent = '알 수 없는 노드입니다.';
+      els.questionMeta.textContent = '구성 데이터를 확인하세요.';
+      els.candidateChips.innerHTML = '';
+      els.answerButtons.classList.add('hidden');
+      els.resultPanel.classList.add('hidden');
+    }
+
+    window.goBack = goBack;
+    window.restart = restart;
+
+    els.yesBtn.addEventListener('click', () => answer('yes'));
+    els.noBtn.addEventListener('click', () => answer('no'));
+    els.backBtn.addEventListener('click', goBack);
+    els.restartBtn.addEventListener('click', restart);
+
+    render();
+  </script>
+</body>
+</html>
